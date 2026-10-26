@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "title": "MSG FARM",
+    "location": "NARRA, PALAWAN, PHILIPPINES",
+    "year": "2026",
+    "type": "MASTER PLAN",
+    "description": "MSG Farm is a 10.79-hectare agri-tourism master plan in Narra, Palawan, organized into five functional zones; public and visitor facilities, activity and learning, leisure and relaxation, poultry and apiary, and farm operations. Structures follow a tropical vernacular approach, employing thatch roofing, terracotta tile, local timber, and stone walls to ground each building within its agricultural setting. An earth-tone material palette and restrained proportions maintain a calm, consistent atmosphere across all zones. The development is phased in three stages: Phase 01 establishes the public entrance, farm-to-table restaurant, and market; Phase 02 introduces orchard and fishpond activities; and Phase 03 delivers glamping tents, eco-lodges, and a riverside wellness deck. The plan integrates agri-tourism programming with sustainable, site-responsive architecture.",
+    "image": "/assets/project-1.webp"
+  },
+  {
+    "id": 2,
+    "title": "CASA JOYA",
+    "location": "EL NIDO, PALAWAN, PHILIPPINES",
+    "year": "2026",
+    "type": "MASTER PLAN",
+    "description": "Casa Joya is a phased eco-resort master plan on a 14,829 sqm site in El Nido, Palawan. The site layout follows the creek's edge, preserving existing vegetation while connecting structures through timber boardwalks and pedestrian paths. Development is organized into four phases; road network, parking, camping ground, and yoga deck in Phase 01; reception, restaurant, eight private villas, and a 160 sqm pool in Phase 02; a creek-side restaurant and boardwalk in Phase 03; and 12 riverside villas, a second pool, and a spa in Phase 04. Thatch roofing, river cobblestone walls, local timber, bamboo cladding, and rattan weave tie each structure to its natural setting. Interiors maintain the same material language through woven headboard panels, arched openings, open-air garden bathrooms, and bamboo ceiling systems throughout the villas.",
+    "image": "/assets/project-2.webp"
+  },
+  {
+    "id": 3,
+    "title": "CUYO BAYWALK RECREATIONAL PARK",
+    "location": "CUYO, PALAWAN, PHILIPPINES",
+    "year": "2024",
+    "type": "MASTER PLAN",
+    "description": "The Cuyo Baywalk Recreational Park is a public waterfront proposal for Cuyo, Palawan, organizing the coastal site into seven program areas; entrance, cycling and walking path, food park, public toilet, viewing deck, baywalk, and parking. A red boardwalk spine runs parallel to the shoreline, anchored by a sculptural lattice viewing deck and a series of circular red pergolas that serve as focal points along the promenade. The plant palette is composed entirely of native and coastal species selected for resilience in a salt-exposed waterfront environment. A two-level floodwall and retaining wall system along the beach edge provides overflow protection while integrating planted boxes at the upper level. The design balances active recreation with passive public space, creating a coherent civic waterfront for the community of Cuyo.",
+    "image": "/assets/project-3.webp"
+  },
+  {
+    "id": 4,
+    "title": "VERDE PLANT-BASED CAFÉ & RESTO",
+    "location": "EL NIDO, PALAWAN, PHILIPPINES",
+    "year": "2022",
+    "type": "INTERIOR",
+    "description": "Verde Plant-Based Café & Resto is an interior design for a plant-based café and restaurant in El Nido, Palawan. The two-level space spans a ground floor dining and bar area with a mezzanine above, connected by a spiral staircase. The design draws from the owner's personal plant collection, integrating her curated specimens as the defining architectural gesture of the project. A warm timber slat ceiling runs throughout, contrasted against dark concrete walls and polished tile floors. The central bar counter with timber cladding and stone surface anchors the ground floor, while large-format glazing brings the surrounding tropical landscape into the dining space. The living collection becomes the interior itself; making the owner's passion for plants the primary spatial and material identity of the project.",
+    "image": "/assets/project-4.webp"
+  },
+  {
+    "id": 5,
+    "title": "H HOTEL RECEPTION LOBBY",
+    "location": "EL NIDO, PALAWAN, PHILIPPINES",
+    "year": "2022",
+    "type": "INTERIOR",
+    "description": "The H Hotel Reception Lobby is a contemporary interior design intended to establish a refined hospitality arrival experience in El Nido, Palawan. The double-height arrival space is defined by large-format stone walls, wood ceiling cladding, vertical garden features, and custom-designed reception counters. Layered lighting; including suspended halo chandeliers and accent pendants; enhances the spatial volume while highlighting key architectural features. The material palette combines natural stone, timber finishes, exposed concrete, and integrated greenery to balance elegance and comfort with a direct connection to nature. Spatial organization prioritizes clear circulation from entry to reception, while biophilic elements and warm material tones create a welcoming environment suited to the resort character of the site.",
+    "image": "/assets/project-5.webp"
+  },
+  {
+    "id": 6,
+    "title": "SUNMAI BAR & RESTAURANT",
+    "location": "EL NIDO, PALAWAN, PHILIPPINES",
+    "year": "2024",
+    "type": "RENOVATION",
+    "description": "Sunmai Bar & Resto is a beach bar and restaurant renovation in El Nido, Palawan, designed around a single concept; bringing the beach inside without losing the building. A timber post-and-beam frame with wide overhanging eaves keeps the dining area open on all sides, while a stacked brick wall anchors the main facade as both structure and signage. The material palette; terracotta tile, raw concrete, metal mesh, and maroon plaster; carries the same rough-coastal logic from exterior to interior bar. Raw, layered materials are applied consistently throughout, reinforcing the casual, coastal character of the site. The result is a space that reads as both informal and architecturally deliberate, rooted in its beachfront context without relying on ornament.",
+    "image": "/assets/project-6.webp"
+  },
+  {
+    "id": 7,
+    "title": "MAO INTERIOR RENOVATION",
+    "location": "EL NIDO, PALAWAN, PHILIPPINES",
+    "year": "2023",
+    "type": "RENOVATION",
+    "description": "The Mao Interior Renovation involves the redesign of two residential units within a mixed-use building in El Nido, Palawan. Each unit occupies a compact floor plate organized around an open-plan living, dining, and kitchen arrangement, with a private bedroom zone separated by a timber slat partition. The two units follow distinct material palettes; Unit 01 applies a warm, Japandi-inspired scheme of natural wood, light plank flooring, and soft neutral tones; Unit 02 takes a more urban direction with dark marble tile, black steel-framed shelving, and stone-finished surfaces. Despite their different characters, both units share the same spatial logic, prioritizing efficient plan organization and material coherence within the constraints of an existing building footprint.",
+    "image": "/assets/project-7.webp"
+  },
+  {
+    "id": 8,
+    "title": "WRAP TECHNOLOGIES INC.",
+    "location": "SAN VICENTE, PALAWAN, PHILIPPINES",
+    "year": "2026",
+    "type": "LANDSCAPING",
+    "description": "Wrap Technologies Inc. is a comprehensive planting design for a beachfront residential property in San Vicente, Palawan. The site is organized into seven distinct sectors; beach front, central open space, casitas, pathways and side border, house vicinity, driveway and slope protection, and front boundary and road buffer; each with a tailored planting strategy. The design prioritizes native and endemic species suited to the coastal environment, including salt-tolerant groundcovers along the shoreline and dense layered tropical plantings around the main house and casitas. Slope stabilization is addressed through deep-rooted shrubs, mat-forming groundcovers, and canopy trees along the driveway and graded embankments. The proposal balances visual quality with long-term ecological resilience across all zones of the property.",
+    "image": "/assets/project-8.webp"
+  },
+  {
+    "id": 9,
+    "title": "SAGUN RESIDENCE",
+    "location": "PUERTO PRINCESA, PALAWAN, PHILIPPINES",
+    "year": "2024",
+    "type": "LANDSCAPING",
+    "description": "The Sagun Residence Landscaping is a comprehensive softscape design for a two-storey private residence in Puerto Princesa City, Palawan. The design is organized into seven distinct zones; entrance gate, lawn, house front, walkway, pool area, driveway and sides, and rear side; each with a tailored planting strategy suited to its spatial function and relationship to the house. The central lawn forms the primary open space, framed by curvilinear planting beds filled with layered tropical shrubs, ornamental grasses, and flowering foliage. The pool area features a Singaporean vine wall and a timber-edged deck. The design draws from a tropical garden aesthetic, balancing lush planting density with open lawn areas to create a livable and visually cohesive residential landscape.",
+    "image": "/assets/project-9.webp"
+  },
+  {
+    "id": 10,
+    "title": "MR. YUE RESIDENCE",
+    "location": "LAUREL, BATANGAS, PHILIPPINES",
+    "year": "2022",
+    "type": "RESIDENTIAL",
+    "description": "The Mr. Yue Residence is a two-storey dwelling with a basement and roof deck, situated within Canyon Woods Resorts & Club in Laurel, Batangas. The design draws from an industrial-tropical language, combining heavy stone perimeter walls with a steel structural frame and large tempered glass panels, with timber cladding introducing warmth across the façade and interior volumes. The ground floor is organized around a central sunken living and dining area that opens directly toward a swimming pool and sundeck. The second floor contains three bedrooms and balcony access, while the roof deck accommodates a bar, seating, and outdoor dining. Material choices throughout; stone slab flooring, weather-resistant timber decking, and stone tile cladding; reinforce a grounded, tactile quality suited to the resort setting.",
+    "image": "/assets/project-10.webp"
+  },
+  {
+    "id": 11,
+    "title": "BAÑAS RESIDENCE",
+    "location": "NARRA, PALAWAN, PHILIPPINES",
+    "year": "2025",
+    "type": "RESIDENTIAL",
+    "description": "The Bañas Residence is a single-storey dwelling with a terrace level, situated against a mountain backdrop in Narra, Palawan. The design draws from tropical vernacular and Japanese spatial principles, organizing the program around a transitional open courtyard at the main entry. Exposed timber roof framing, low-pitched overhangs, and steel-framed glass panels define the character of each façade. Terracotta plaster accent walls run through the interior and exterior, anchoring a warm, earthy material palette alongside timber cabinetry and terrazzo surfaces. The floor plan arranges the master bedroom, guest bedrooms, living, dining, and kitchen areas along a clear central axis, with the service area positioned to the rear. Rain chains at the entry courtyard columns serve as both a functional drainage element and a deliberate decorative detail, while large glazed openings maintain a direct visual connection to the surrounding landscape.",
+    "image": "/assets/project-11.webp"
+  },
+  {
+    "id": 12,
+    "title": "DELA CRUZ STUDIO.",
+    "location": "BRAND IDENTITY",
+    "year": "2024",
+    "type": "BRAND IDENTITY",
+    "description": "CONCEPT\n\nThe DCS Brand Mark is an abstract representation of the architect, the person behind every concept, drawing, and built space. Through simple geometric forms and carefully controlled negative space, the symbol captures both the designer and the essential tools of the profession.\n\nThe rounded forms create the silhouette of a standing architect, while the diagonal negative space represents a ruler, drawing tube, rolled blueprint, or drafting tool. Together, these elements express creativity, precision, and the process of transforming ideas into architecture.\n\nBuilt from minimal geometry, the mark is designed to remain bold, timeless, and instantly recognizable across every scale and application.",
+    "image": "/assets/project-12.webp"
+  }
+]
