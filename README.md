@@ -20,6 +20,7 @@ Open http://127.0.0.1:43821. No package installation is required; the build need
 - `dist/app.js`: page content, navigation, contact behavior, and rendering.
 - `dist/style.css`: base styles, project and contact layouts, and focus styles.
 - `dist/editorial.css`: approved editorial homepage, shared navigation/footer, numbered gallery, and expandable services.
+- `dist/effects.js` and `dist/effects.css`: project carousel, two-row tools carousel, service tabs and transitions, merged About section, and motion/accessibility handling.
 - `dist/projects.json`: all 12 project titles, locations, dates, types, and descriptions.
 - `dist/assets/`: locally bundled images and fonts.
 - `dist/index.html`: shared page shell and metadata.
@@ -50,10 +51,10 @@ Serve `_site/` under a folder named `delacruz-studio-portfolio` to reproduce the
 
 ## Contact behavior
 
-The contact address is `nyxdcz@gmail.com`. The form validates name, email, and message, then opens a draft in the visitor's email application. It does not send or store inquiries itself. Visitors review and send the draft in their mail app, or use the direct email link and copy button. No email service credentials are needed.
+The contact address is `nyxdcz@gmail.com`. It is presented through Email me buttons rather than printed on the site. The form validates name, email, and message, then opens a draft in the visitor's email application. It does not send or store inquiries itself. Visitors review and send the draft in their mail app. No email service credentials are needed.
 
 ## Reference and scope
 
-Content reference: https://delacruzstudio.framer.website/ and the supplied Framer desktop project. The approved update preserves DCS branding and original imagery while adopting the editorial project numbering and service presentation discussed using https://titarvl.framer.website/ as a reference. The homepage uses a compact introduction, four featured projects, the full 12-project index, expandable services, a short biography, and direct contact. Case studies retain original descriptions and full-resolution images. Motion remains restrained and respects reduced-motion preferences.
+Content reference: https://delacruzstudio.framer.website/ and the supplied Framer desktop project. The approved update preserves DCS branding and original imagery while adopting the editorial typography, project numbering and interactions discussed using https://titarvl.framer.website/ as a reference. The homepage includes a large project fan beside the introduction, four featured projects, the full 12-project index, expandable services with image/description tabs, a scrolling project feature, a two-row interactive tools carousel, one complete About story with a right-edge portrait, and direct contact. Case studies retain original descriptions and full-resolution images. Carousel motion can be paused; reduced-motion preferences and offscreen/document visibility are respected. On phones, the project fan becomes a horizontal swipe gallery.
 
 See `VERIFICATION.md` for checks and known verification limits.
