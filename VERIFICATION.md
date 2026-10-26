@@ -1,6 +1,6 @@
 # Approved portfolio update verification
 
-The user reviewed the isolated preview, requested a consistency check, and authorized publishing the resulting website on 27 October 2026. This record describes executed checks; deployment evidence is appended after publication.
+The user reviewed the isolated preview, requested consistency checks and browser-annotation revisions, and authorized publishing the resulting website on 27 October 2026. This record describes executed checks. Publication receipts are saved with the chat's outputs after deployment.
 
 ## Local builds and routes
 
@@ -14,7 +14,7 @@ The user reviewed the isolated preview, requested a consistency check, and autho
 - Homepage, case-study, inquiry and software layouts were measured at 358, 389, 798, 800, 1440 and 1919 CSS pixels without horizontal overflow.
 - Final homepage reloads waited for all enhancements. The portrait loaded successfully at all six widths with no image fallbacks, and all four story paragraphs remained present.
 - Phone About text gutters match within pixel rounding; the portrait meets the section's right edge.
-- Body text uses Inter Display. Navigation, buttons, form labels, metadata and indices use Martian Mono. The larger hero action and title-case My Story heading are deliberate reference choices.
+- Body text uses Inter Display. Navigation, buttons, form labels, metadata and indices use Martian Mono. The larger hero action and large About introduction follow the supplied references; the About me / My Story labels have been removed as requested.
 - Desktop About, case-study and inquiry views were visually inspected. The approved hero composition, supplied tool artwork, project fan and full story remain.
 - Ink #435242 on ground #dcdcd6 is 6.04:1; muted text #566052 on ground is 4.78:1; control-border #71796c on ground is 3.28:1. These pairings meet the checked text or non-text thresholds; this is not a complete WCAG audit.
 
@@ -22,10 +22,17 @@ The user reviewed the isolated preview, requested a consistency check, and autho
 
 - The mobile menu opens, closes on selection, and closes with Escape while returning focus to the Menu button.
 - Service rows activate with Enter. Images/Description tabs work, and arrow keys switch the active tab and focus.
-- The tools carousel supports native dragging, keyboard focus, software destinations and Pause icons. Its pressed state updates correctly. The global Pause motion control and reduced-motion handling remain.
+- The tools carousel supports native dragging, keyboard focus and software destinations. Visible Pause icons and the project carousel toolbar were removed as requested. Reduced-motion handling, pointer/focus pausing and offscreen/document visibility handling remain.
 - The full index exposes all 12 project links. Same-page homepage links have existing targets. Initial section links resolve after enhancements and fonts settle.
 - Empty inquiry submission focuses the required Name field; name, email and message remain required. The visible copy explains email-draft behavior. No message was sent.
 - Eight project-to-home navigations preserved the merged story, tools and portrait. Responsive reload checks exposed and then verified the fix for a premature image fallback. The final fresh browser tab reported no console warnings or errors.
+
+## Latest annotation checks before publication
+
+- Seven widths (358, 798, 800, 828, 1149, 1440 and 1919 CSS px) fit horizontally after unclipping the project scene and moving Tools before Design in focus. At 828px, native drags sampled the fan through more than a full turn. Card bounds remained within x384–791 of the viewport, with the lowest sampled edge at y596 before instructions at y621. Scene overflow is visible and its clip path is none.
+- The carousel toolbar, selected-views label and Pause icons control are absent. The software link matches the project-index control's measured font, size, padding, border and radius, and opens the software route. Keyboard arrow rotation works without the removed toolbar.
+- Carousel instructions match Selected Work at 11px. Discuss a Project and Let's Talk have closer underlines while retaining 56px and 44px hit heights.
+- The final continuous About description was checked at 358, 800 and 1112 CSS px. It has only the Hi, I'm Nyco. heading, one large introduction, four body paragraphs and one motto. Paragraph typography is uniform; the introduction-to-body gap matches paragraph spacing (20px phone, 22px desktop). No horizontal overflow or console errors were found.
 
 ## Scope and limits
 

@@ -10,11 +10,11 @@
   const titles = {1:'MSG Farm',8:'Wrap Technologies Inc.',11:'Bañas Residence',4:'Verde Plant-Based Café & Resto'};
   const title = p => titles[p.id] || p.title;
   let initialized = false;
-  let manuallyPaused = false;
   let reduced = reducedPreference.matches;
   let scrollFrame = 0;
   let wheelFrame = 0;
   let wheelVisible = false;
+  let wheelHovering = false;
   let angle = -18;
   let targetAngle = angle;
   let previousTime = 0;
@@ -27,7 +27,6 @@
   let wheel;
   let scene;
   let mobileTrack;
-  let pauseButton;
   let statementWords = [];
   let focusScroll;
   let focusImage;
@@ -35,7 +34,6 @@
   let toolsRows = [];
   let toolsFrame = 0;
   let toolsVisible = false;
-  let toolsUserPaused = false;
   let toolsHovering = false;
   let toolsFocused = false;
   let toolsLastTime = 0;
@@ -54,7 +52,7 @@
     const delta = previousTime ? Math.min(time - previousTime, 50) : 0;
     previousTime = time;
     const focused = wheel.contains(document.activeElement);
-    if (!dragging && !focused && time > idleUntil) targetAngle -= delta * .006;
+    if (!dragging && !focused && !wheelHovering && time > idleUntil) targetAngle -= delta * .006;
     if (!dragging) angle += (targetAngle - angle) * .1;
     paintWheel();
     wheelFrame = requestAnimationFrame(runWheel);
@@ -84,22 +82,18 @@
     orbit.className = 'project-orbit intro-projects';
     orbit.id = 'motion-showcase';
     orbit.setAttribute('aria-labelledby','orbit-heading');
-    orbit.innerHTML = `<div class="orbit-topline"><h2 id="orbit-heading" class="orbit-title">Explore selected projects</h2><p class="eyebrow">Selected views [06]</p><p class="orbit-instruction"><span class="orbit-desktop-hint">Drag to explore<br>Choose a project to view</span><span class="orbit-mobile-hint">Swipe to explore<br>Tap a project to view</span></p></div><div class="orbit-scene"><div class="orbit-wheel">${selected.map((p,i)=>`<a class="orbit-card" href="${projectURL(p.id)}" style="--card-angle:${(i-(selected.length-1)/2)*28}deg" data-angle="${(i-(selected.length-1)/2)*28}" aria-label="View ${escape(title(p))}">${picture(p)}<span class="orbit-caption"><span>${String(p.id).padStart(3,'0')}</span>${escape(title(p))}<span aria-hidden="true">↗</span></span></a>`).join('')}</div></div><div class="orbit-mobile" aria-label="Swipe through selected projects">${selected.map(p=>`<a class="orbit-mobile-card" href="${projectURL(p.id)}">${picture(p)}<span class="orbit-caption"><span>${String(p.id).padStart(3,'0')}</span>${escape(title(p))}<span aria-hidden="true">↗</span></span></a>`).join('')}</div><div class="orbit-toolbar"><p class="orbit-note">Six projects. Different perspectives.</p><div class="orbit-controls"><button type="button" data-orbit-prev aria-label="Previous project angle">←</button><button type="button" class="motion-pause" aria-pressed="false">Pause motion</button><button type="button" data-orbit-next aria-label="Next project angle">→</button></div></div>`;
+    orbit.innerHTML = `<div class="orbit-topline"><h2 id="orbit-heading" class="orbit-title">Explore selected projects</h2></div><div class="orbit-scene" role="group" aria-label="Selected projects. Drag or use left and right arrow keys."><div class="orbit-wheel">${selected.map((p,i)=>`<a class="orbit-card" href="${projectURL(p.id)}" style="--card-angle:${(i-(selected.length-1)/2)*28}deg" data-angle="${(i-(selected.length-1)/2)*28}" aria-label="View ${escape(title(p))}">${picture(p)}<span class="orbit-caption"><span>${String(p.id).padStart(3,'0')}</span>${escape(title(p))}<span aria-hidden="true">↗</span></span></a>`).join('')}</div></div><div class="orbit-mobile" aria-label="Swipe through selected projects">${selected.map(p=>`<a class="orbit-mobile-card" href="${projectURL(p.id)}">${picture(p)}<span class="orbit-caption"><span>${String(p.id).padStart(3,'0')}</span>${escape(title(p))}<span aria-hidden="true">↗</span></span></a>`).join('')}</div><div class="orbit-bottomline"><p class="orbit-instruction"><span class="orbit-desktop-hint">Drag to explore<br>Choose a project to view</span><span class="orbit-mobile-hint">Swipe to explore<br>Tap a project to view</span></p></div>`;
     document.querySelector('.home-intro').append(orbit);
-    orbit.querySelector('.orbit-note').remove();
-    const topline=orbit.querySelector('.orbit-topline');
-    const bottomline=document.createElement('div');
-    bottomline.className='orbit-bottomline';
-    bottomline.append(topline.querySelector('.orbit-instruction'));
-    orbit.prepend(topline);
-    orbit.querySelector('.orbit-toolbar').before(bottomline);
     scene = orbit.querySelector('.orbit-scene');
     wheel = orbit.querySelector('.orbit-wheel');
     mobileTrack = orbit.querySelector('.orbit-mobile');
-    pauseButton = orbit.querySelector('.motion-pause');
-    orbit.querySelector('[data-orbit-prev]').addEventListener('click',()=>rotate(-1));
-    orbit.querySelector('[data-orbit-next]').addEventListener('click',()=>rotate(1));
-    pauseButton.addEventListener('click',()=>{manuallyPaused=!manuallyPaused;updateMotion();});
+    scene.addEventListener('pointerenter',()=>{wheelHovering=true;});
+    scene.addEventListener('pointerleave',()=>{wheelHovering=false;});
+    scene.addEventListener('keydown',event=>{
+      if(!['ArrowLeft','ArrowRight'].includes(event.key))return;
+      event.preventDefault();
+      rotate(event.key==='ArrowLeft'?-1:1);
+    });
     scene.addEventListener('pointerdown',event=>{
       if (event.button!==0) return;
       dragging=true; dragged=false; dragX=event.clientX; dragAngle=angle;
@@ -229,7 +223,7 @@
 
   function runTools(time){
     toolsFrame=0;
-    if(!toolsVisible||reduced||toolsUserPaused||toolsHovering||toolsFocused||document.hidden||toolsRows.some(row=>row.dragging))return;
+    if(!toolsVisible||reduced||toolsHovering||toolsFocused||document.hidden||toolsRows.some(row=>row.dragging))return;
     const delta=toolsLastTime?Math.min(time-toolsLastTime,50):0;
     toolsLastTime=time;
     toolsRows.forEach(row=>{row.offset+=row.speed*delta/1000;paintToolsRow(row);});
@@ -241,10 +235,7 @@
     cancelAnimationFrame(toolsFrame);
     toolsFrame=0;
     toolsLastTime=0;
-    const control=toolsSection.querySelector('.tools-pause');
-    control.textContent=toolsUserPaused?'Resume icons':'Pause icons';
-    control.setAttribute('aria-pressed',String(toolsUserPaused));
-    if(toolsVisible&&!reduced&&!toolsUserPaused&&!toolsHovering&&!toolsFocused&&!document.hidden)toolsFrame=requestAnimationFrame(runTools);
+    if(toolsVisible&&!reduced&&!toolsHovering&&!toolsFocused&&!document.hidden)toolsFrame=requestAnimationFrame(runTools);
   }
 
   function setupToolsAndStory(){
@@ -261,7 +252,7 @@
     toolsSection.setAttribute('aria-labelledby','tools-heading');
     toolsSection.setAttribute('aria-roledescription','carousel');
     const second=[...software.slice(4),...software.slice(0,4)];
-    toolsSection.innerHTML=`<div class="tools-carousel-heading editorial-shell"><h2 id="tools-heading">The tools I reach for, day to day.</h2></div><div class="tools-lanes">${[software,second].map((items,row)=>`<div class="tools-lane" data-tools-row="${row}" ${row?'aria-hidden="true"':''}><div class="tools-track">${cycle(items,row,false)}${cycle(items,row,true)}</div></div>`).join('')}</div><div class="tools-carousel-footer editorial-shell"><a class="editorial-text-link" href="${new URL('tool/software/',base).href}">View my software</a><button class="tools-pause" type="button" aria-pressed="false">Pause icons</button></div>`;
+    toolsSection.innerHTML=`<div class="tools-carousel-heading editorial-shell"><h2 id="tools-heading">The tools I reach for, day to day.</h2></div><div class="tools-lanes">${[software,second].map((items,row)=>`<div class="tools-lane" data-tools-row="${row}" ${row?'aria-hidden="true"':''}><div class="tools-track">${cycle(items,row,false)}${cycle(items,row,true)}</div></div>`).join('')}</div><div class="tools-carousel-footer editorial-shell"><a class="outline-index-link" href="${new URL('tool/software/',base).href}">View my software</a></div>`;
     document.querySelector('.home-tools')?.remove();
     document.querySelector('.home-about').before(toolsSection);
     toolsRows=[...toolsSection.querySelectorAll('.tools-lane')].map((lane,i)=>({lane,track:lane.querySelector('.tools-track'),offset:i?-500:0,speed:i?24:-28,dragging:false,dragged:false,startX:0,startOffset:0}));
@@ -302,18 +293,18 @@
     toolsSection.addEventListener('pointerleave',()=>{toolsHovering=false;toolsRows.forEach(row=>{row.dragging=false;});refreshToolsMotion();});
     toolsSection.addEventListener('focusin',event=>{toolsFocused=event.target.classList.contains('tool-logo-link');refreshToolsMotion();});
     toolsSection.addEventListener('focusout',()=>setTimeout(()=>{toolsFocused=toolsSection.contains(document.activeElement)&&document.activeElement.classList.contains('tool-logo-link');refreshToolsMotion();},0));
-    toolsSection.querySelector('.tools-pause').addEventListener('click',()=>{toolsUserPaused=!toolsUserPaused;refreshToolsMotion();});
     new IntersectionObserver(entries=>{toolsVisible=entries[0].isIntersecting;refreshToolsMotion();},{threshold:.05}).observe(toolsSection);
+    const introduction="I'm a freelance Architectural & Landscape Designer and Professional Architectural Visualizer based in Palawan, Philippines.";
     const paragraphs=[
-      "I'm a freelance Architectural & Landscape Designer and Professional Architectural Visualizer based in Palawan, Philippines. I began working in the design field in 2015 while completing my Bachelor of Science in Architecture at Palawan State University.",
+      "I began working in the design field in 2015 while completing my Bachelor of Science in Architecture at Palawan State University.",
       "My work includes architectural design, landscape design, master planning, spatial planning, interior design, 3D modeling, and high-quality architectural visualization for residential, commercial, hospitality, and mixed-use projects. I support each project from site analysis and concept development to presentation drawings, photorealistic renderings, and design documentation.",
       "I believe good design begins with understanding the site, the client, and the purpose of the project. My approach combines careful planning, practical design thinking, and clear visual communication to create spaces that are thoughtful, buildable, and connected to their surroundings.",
       "I work independently and collaborate with architects, developers, property owners, interior designers, and multidisciplinary teams. Every project is different, but my goal remains the same: to transform strong ideas into functional, context-driven, and visually engaging spaces."
     ];
     const about=document.querySelector('.home-about');
     about.classList.add('combined-about');
-    about.setAttribute('aria-labelledby','story-heading');
-    about.querySelector('.about-content').innerHTML=`<header class="about-heading" id="my-story"><p class="eyebrow">About me</p><h2 id="story-heading">My Story</h2></header><div class="about-biography story-copy">${paragraphs.map((p,i)=>`<p${i===0?' class="about-lead"':''}>${escape(p)}</p>`).join('')}<p class="story-motto">Nurture Concept. Yield Results.</p></div>`;
+    about.setAttribute('aria-labelledby','about-heading');
+    about.querySelector('.about-content').innerHTML=`<header class="about-heading"><p class="eyebrow">The person behind the work</p><h2 id="about-heading">Hi, I’m Nyco.</h2></header><div class="about-biography"><p class="about-lead">${escape(introduction)}</p><div class="about-story story-copy" id="my-story">${paragraphs.map(p=>`<p>${escape(p)}</p>`).join('')}<p class="story-motto">Nurture Concept. Yield Results.</p></div></div>`;
   }
 
   function setupFocus(projects){
@@ -322,7 +313,7 @@
     const section=document.createElement('section');
     section.className='focus-study editorial-shell';
     section.innerHTML=`<div class="editorial-heading"><div><p class="eyebrow">Design in focus</p><h2>A closer look.</h2></div><span class="section-index">[${String(p.id).padStart(3,'0')}]</span></div><div class="focus-scroll"><div class="focus-sticky"><a class="focus-image" href="${projectURL(p.id)}" aria-label="View ${escape(title(p))}">${picture(p)}<span class="focus-caption"><span>${escape(title(p))}</span><span>Explore this project ↗</span></span></a></div></div>`;
-    (document.querySelector('.tools-carousel')||document.querySelector('.home-about')).before(section);
+    document.querySelector('.home-about').before(section);
     focusScroll=section.querySelector('.focus-scroll');
     focusImage=section.querySelector('.focus-image');
   }
@@ -395,10 +386,8 @@
   function scheduleScroll(){if(!scrollFrame)scrollFrame=requestAnimationFrame(updateScroll);}
 
   function updateMotion(){
-    reduced=reducedPreference.matches||manuallyPaused;
+    reduced=reducedPreference.matches;
     document.body.classList.toggle('motion-reduced',reduced);
-    pauseButton.textContent=manuallyPaused?'Resume motion':'Pause motion';
-    pauseButton.setAttribute('aria-pressed',String(manuallyPaused));
     cancelAnimationFrame(wheelFrame);wheelFrame=0;
     if(reduced)document.querySelectorAll('.motion-reveal').forEach(n=>n.classList.add('is-visible'));
     else startWheel();
