@@ -2,7 +2,7 @@
 
 Independent HTML, CSS, and JavaScript recreation of Nyco's existing Framer portfolio. The site includes the home page, biography, software page, project index, all 12 case studies, contact page, and a missing-page view.
 
-The original portrait, logo, project images, tool graphics, and Neue Montreal fonts are included locally. The website does not load the Framer runtime or depend on Framer hosting. The existing FlipHTML5 portfolio and social profiles remain external links.
+The original portrait, logo, project images, and tool graphics are included locally. The approved typography uses locally bundled Inter Display for headings and body copy, and Martian Mono for navigation, labels, and indices. Their SIL Open Font Licenses are included in `licenses/` and copied into the built site. The website does not load the Framer runtime or depend on Framer hosting. Social profiles remain external links.
 
 ## Preview locally
 
@@ -18,11 +18,13 @@ Open http://127.0.0.1:43821. No package installation is required; the build need
 ## Edit the site
 
 - `dist/app.js`: page content, navigation, contact behavior, and rendering.
-- `dist/style.css`: colors, typography, responsive layouts, and focus styles.
+- `dist/style.css`: base styles, project and contact layouts, and focus styles.
+- `dist/editorial.css`: approved editorial homepage, shared navigation/footer, numbered gallery, and expandable services.
 - `dist/projects.json`: all 12 project titles, locations, dates, types, and descriptions.
 - `dist/assets/`: locally bundled images and fonts.
 - `dist/index.html`: shared page shell and metadata.
 - `build.mjs`: creates static folders for each route. Run this after editing the shared HTML or project list.
+- `tools/prepare-images.py`: macOS helper to regenerate 680px and 1280px gallery images from the original project files. These derivatives are committed, so CI does not need this helper.
 
 ## Host independently
 
@@ -52,6 +54,6 @@ The contact address is `nyxdcz@gmail.com`. The form validates name, email, and m
 
 ## Reference and scope
 
-Reference: https://delacruzstudio.framer.website/ and the supplied Framer desktop project. This is a close visual recreation with responsive reflow, accessible contrast, normal navigation, and locally bundled assets. Framer's letter-by-letter biography animation, draggable tool tags, and automatic marquee are replaced with readable static content and restrained interaction feedback.
+Content reference: https://delacruzstudio.framer.website/ and the supplied Framer desktop project. The approved update preserves DCS branding and original imagery while adopting the editorial project numbering and service presentation discussed using https://titarvl.framer.website/ as a reference. The homepage uses a compact introduction, four featured projects, the full 12-project index, expandable services, a short biography, and direct contact. Case studies retain original descriptions and full-resolution images. Motion remains restrained and respects reduced-motion preferences.
 
 See `VERIFICATION.md` for checks and known verification limits.
