@@ -32,3 +32,7 @@ The removed carousel toolbar, Selected views label, Pause icons button, and Abou
 These checks use a local desktop browser with responsive widths; they are not physical-device tests. No form was submitted and no email app was launched. The form opens a draft for the visitor to review and send, and does not send or store messages. The homepage has one inquiry action; the separate contact page retains Email me without printing the address. External social-account content and performance benchmarks were not audited.
 
 No dependencies, tracking scripts, external image services, or mail-service credentials were added. The site remains independent of Framer and uses the existing GitHub Actions Pages workflow.
+
+## Browser branding update — 27 October 2026
+
+The user approved removing | nyco from the homepage tab title and replacing the favicon with the supplied DCS light/dark artwork. Root and Pages-prefix builds passed. All 18 generated HTML shells include the new title and both icon links. Source and built icon hashes match the supplied originals. Local browser DOM confirmed the title Dela Cruz Studio. and the theme-specific favicon metadata. The build now validates that both icon assets exist. No page layout or contact behavior changed in this revision.

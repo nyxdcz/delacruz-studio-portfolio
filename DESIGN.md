@@ -21,3 +21,5 @@ Case studies lead with the full, uncropped original image after metadata and act
 The final consistency pass standardizes body fonts, label and button typography, project names, phone text gutters, control widths and inquiry-page spacing. Image fallbacks wait for actual error events so responsive-image selection cannot incorrectly remove the portrait. The user reviewed the isolated preview and then authorized publication on 27 October 2026.
 
 The homepage description emphasizes site planning and landscape design: “From site planning and landscape design to detailed 3D visualization, I help turn your ideas into thoughtful outdoor spaces.” The user reviewed these refinements locally and authorized GitHub publication on 27 October 2026.
+
+The homepage browser tab is titled Dela Cruz Studio. The supplied 64px DCS PNG icons are bundled without alteration: dark artwork is the default for light browser themes, with light artwork selected for a dark browser color scheme.

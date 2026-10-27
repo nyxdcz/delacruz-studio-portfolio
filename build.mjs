@@ -24,5 +24,5 @@ for (const p of projects) {
   await access(join(output, p.image));
   for (const width of [680,1280]) await access(join(output,'assets',`project-${p.id}-${width}.jpg`));
 }
-for (const name of ['logo.png','portrait.png','portrait-preview.png','tools-1.png','tools-2.png','montreal-regular.woff2','montreal-medium.woff2','montreal-bold.woff2','inter-display-regular.woff2','inter-display-medium.woff2','martian-mono.woff2']) await access(join(output,'assets',name));
+for (const name of ['logo.png','favicon-dark.png','favicon-light.png','portrait.png','portrait-preview.png','tools-1.png','tools-2.png','montreal-regular.woff2','montreal-medium.woff2','montreal-bold.woff2','inter-display-regular.woff2','inter-display-medium.woff2','martian-mono.woff2']) await access(join(output,'assets',name));
 console.log(`Prepared ${routes.length + 1} pages at ${normalizedBase} in ${output} and verified all portfolio assets.`);
