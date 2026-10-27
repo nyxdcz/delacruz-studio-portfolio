@@ -82,7 +82,7 @@
     orbit.className = 'project-orbit intro-projects';
     orbit.id = 'motion-showcase';
     orbit.setAttribute('aria-labelledby','orbit-heading');
-    orbit.innerHTML = `<div class="orbit-topline"><h2 id="orbit-heading" class="orbit-title">Explore selected projects</h2></div><div class="orbit-scene" role="group" aria-label="Selected projects. Drag or use left and right arrow keys."><div class="orbit-wheel">${selected.map((p,i)=>`<a class="orbit-card" href="${projectURL(p.id)}" style="--card-angle:${(i-(selected.length-1)/2)*28}deg" data-angle="${(i-(selected.length-1)/2)*28}" aria-label="View ${escape(title(p))}">${picture(p)}<span class="orbit-caption"><span>${String(p.id).padStart(3,'0')}</span>${escape(title(p))}<span aria-hidden="true">↗</span></span></a>`).join('')}</div></div><div class="orbit-mobile" aria-label="Swipe through selected projects">${selected.map(p=>`<a class="orbit-mobile-card" href="${projectURL(p.id)}">${picture(p)}<span class="orbit-caption"><span>${String(p.id).padStart(3,'0')}</span>${escape(title(p))}<span aria-hidden="true">↗</span></span></a>`).join('')}</div><div class="orbit-bottomline"><p class="orbit-instruction"><span class="orbit-desktop-hint">Drag to explore<br>Choose a project to view</span><span class="orbit-mobile-hint">Swipe to explore<br>Tap a project to view</span></p></div>`;
+    orbit.innerHTML = `<div class="orbit-topline"><h2 id="orbit-heading" class="orbit-title">Explore selected projects</h2></div><div class="orbit-scene" role="group" aria-label="Selected projects. Drag or use left and right arrow keys."><div class="orbit-wheel">${selected.map((p,i)=>`<a class="orbit-card" href="${projectURL(p.id)}" style="--card-angle:${(i-(selected.length-1)/2)*28}deg" data-angle="${(i-(selected.length-1)/2)*28}" aria-label="View ${escape(title(p))}">${picture(p)}<span class="orbit-caption"><span>${String(p.id).padStart(3,'0')}</span>${escape(title(p))}<span class="action-arrow" aria-hidden="true">↗</span></span></a>`).join('')}</div></div><div class="orbit-mobile" aria-label="Swipe through selected projects">${selected.map(p=>`<a class="orbit-mobile-card" href="${projectURL(p.id)}">${picture(p)}<span class="orbit-caption"><span>${String(p.id).padStart(3,'0')}</span>${escape(title(p))}<span class="action-arrow" aria-hidden="true">↗</span></span></a>`).join('')}</div><div class="orbit-bottomline"><p class="orbit-instruction"><span class="orbit-desktop-hint">Drag to explore<br>Choose a project to view</span><span class="orbit-mobile-hint">Swipe to explore<br>Tap a project to view</span></p></div>`;
     document.querySelector('.home-intro').append(orbit);
     scene = orbit.querySelector('.orbit-scene');
     wheel = orbit.querySelector('.orbit-wheel');
@@ -145,7 +145,7 @@
     content.className='about-content';
     content.append(heading,biography);
     const portraitImage=portrait.querySelector('img');
-    if(portraitImage)portraitImage.sizes='(max-width: 799px) 120px, 290px';
+    if(portraitImage)portraitImage.sizes='(max-width: 642px) 28vw, (max-width: 799px) 180px, (max-width: 1199px) 32vw, (max-width: 1421px) 38vw, 540px';
     about.replaceChildren(content,portrait);
     intro.classList.add('intro-with-orbit');
   }
@@ -161,7 +161,7 @@
       const prefix=`service-${index}`;
       const panel=document.createElement('div');
       panel.className='service-motion-content';
-      panel.innerHTML=`<div class="service-tabs" role="tablist" aria-label="${escape(row.querySelector('h3').textContent)} content"><button type="button" role="tab" id="${prefix}-images-tab" aria-controls="${prefix}-images" aria-selected="true">Images</button><span aria-hidden="true">/</span><button type="button" role="tab" id="${prefix}-description-tab" aria-controls="${prefix}-description" aria-selected="false" tabindex="-1">Description</button></div><div class="service-tab-stage"><div class="service-image-panel" id="${prefix}-images" role="tabpanel" aria-labelledby="${prefix}-images-tab">${examples.map(example=>`<a href="${projectURL(example.id)}" class="service-motion-example">${picture(example)}<span>${escape(title(example))} ↗</span></a>`).join('')}</div><div class="service-description-panel" id="${prefix}-description" role="tabpanel" aria-labelledby="${prefix}-description-tab" hidden><p>${escape(description)}</p><a class="editorial-text-link" href="${projectURL(p.id)}">View ${escape(title(p))} <span aria-hidden="true">↗</span></a></div></div>`;
+      panel.innerHTML=`<div class="service-tabs" role="tablist" aria-label="${escape(row.querySelector('h3').textContent)} content"><button type="button" role="tab" id="${prefix}-images-tab" aria-controls="${prefix}-images" aria-selected="true">Images</button><span aria-hidden="true">/</span><button type="button" role="tab" id="${prefix}-description-tab" aria-controls="${prefix}-description" aria-selected="false" tabindex="-1">Description</button></div><div class="service-tab-stage"><div class="service-image-panel" id="${prefix}-images" role="tabpanel" aria-labelledby="${prefix}-images-tab">${examples.map(example=>`<a href="${projectURL(example.id)}" class="service-motion-example">${picture(example)}<span>${escape(title(example))} <span class="action-arrow" aria-hidden="true">↗</span></span></a>`).join('')}</div><div class="service-description-panel" id="${prefix}-description" role="tabpanel" aria-labelledby="${prefix}-description-tab" hidden><p>${escape(description)}</p><a class="editorial-text-link" href="${projectURL(p.id)}">View ${escape(title(p))} <span class="action-arrow" aria-hidden="true">↗</span></a></div></div>`;
       original.replaceWith(panel);
       const summary=row.querySelector('summary');
       let drawerAnimation;
@@ -312,14 +312,14 @@
     if(!p)return;
     const section=document.createElement('section');
     section.className='focus-study editorial-shell';
-    section.innerHTML=`<div class="editorial-heading"><div><p class="eyebrow">Design in focus</p><h2>A closer look.</h2></div><span class="section-index">[${String(p.id).padStart(3,'0')}]</span></div><div class="focus-scroll"><div class="focus-sticky"><a class="focus-image" href="${projectURL(p.id)}" aria-label="View ${escape(title(p))}">${picture(p)}<span class="focus-caption"><span>${escape(title(p))}</span><span>Explore this project ↗</span></span></a></div></div>`;
+    section.innerHTML=`<div class="editorial-heading"><div><p class="eyebrow">Design in focus</p><h2>A closer look.</h2></div><span class="section-index">[${String(p.id).padStart(3,'0')}]</span></div><div class="focus-scroll"><div class="focus-sticky"><a class="focus-image" href="${projectURL(p.id)}" aria-label="View ${escape(title(p))}">${picture(p)}<span class="focus-caption"><span>${escape(title(p))}</span><span>Explore this project <span class="action-arrow" aria-hidden="true">↗</span></span></span></a></div></div>`;
     document.querySelector('.home-about').before(section);
     focusScroll=section.querySelector('.focus-scroll');
     focusImage=section.querySelector('.focus-image');
   }
 
   function setupRollingText(){
-    document.querySelectorAll('#main-nav a,.home-intro-actions a,.editorial-text-link,.home-inquiry').forEach(link=>{
+    document.querySelectorAll('#main-nav a,.home-intro-actions a,.editorial-text-link').forEach(link=>{
       if(link.querySelector('.roll-window'))return;
       const label=link.textContent.trim();
       if(!link.hasAttribute('aria-label'))link.setAttribute('aria-label',label);

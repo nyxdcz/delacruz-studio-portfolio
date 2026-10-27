@@ -1,41 +1,34 @@
 # Approved portfolio update verification
 
-The user reviewed the isolated preview, requested consistency checks and browser-annotation revisions, and authorized publishing the resulting website on 27 October 2026. This record describes executed checks. Publication receipts are saved with the chat's outputs after deployment.
+The user reviewed the isolated preview and authorized GitHub publication on 27 October 2026. The following checks describe the approved source; deployment and live-site results are recorded in the publication receipt saved with the chat outputs.
 
-## Local builds and routes
+## Current publication checks
 
-- JavaScript syntax checks pass for app.js and effects.js.
-- Root-domain and /delacruz-studio-portfolio/ builds create 17 content pages plus 404.html and verify original images, responsive image derivatives and fonts.
-- All 12 project pages, the complete gallery, inquiry page, software routes and missing-page view were visited in the browser. Every checked route has one primary heading, the same five navigation destinations, no duplicate IDs and no measured horizontal overflow.
-- Project titles, dates, locations, descriptions and original case-study images remain the supplied portfolio content. The full Verde Plant-Based Cafe & Resto title is consistent across views (the website preserves the accented spelling).
+- The canonical checkout was clean before promotion. Fetched origin/main and verified it matched HEAD before copying the approved source.
+- Root-domain and /delacruz-studio-portfolio/ builds each prepared 17 content pages plus 404.html and verified portfolio images, responsive derivatives, fonts, and license files.
+- JavaScript syntax checks passed for app.js and effects.js.
+- Shared HTML shells were regenerated for all routes, including all 12 case studies, contact, software, and gallery pages.
 
-## Layout and visual checks
+## Approved local browser evidence
 
-- Homepage, case-study, inquiry and software layouts were measured at 358, 389, 798, 800, 1440 and 1919 CSS pixels without horizontal overflow.
-- Final homepage reloads waited for all enhancements. The portrait loaded successfully at all six widths with no image fallbacks, and all four story paragraphs remained present.
-- Phone About text gutters match within pixel rounding; the portrait meets the section's right edge.
-- Body text uses Inter Display. Navigation, buttons, form labels, metadata and indices use Martian Mono. The larger hero action and large About introduction follow the supplied references; the About me / My Story labels have been removed as requested.
-- Desktop About, case-study and inquiry views were visually inspected. The approved hero composition, supplied tool artwork, project fan and full story remain.
-- Ink #435242 on ground #dcdcd6 is 6.04:1; muted text #566052 on ground is 4.78:1; control-border #71796c on ground is 3.28:1. These pairings meet the checked text or non-text thresholds; this is not a complete WCAG audit.
+- At 398, 799, 1184, and 1426 CSS pixels, the About text and portrait occupy adjacent columns, the image meets the contact section with zero measured gap, and all four biography paragraphs remain. No horizontal page overflow was measured. The original portrait proportions are preserved.
+- About and A closer look share the same section heading size. Earlier checks at 358, 798, 800, 988, 1440, and 1910 CSS pixels confirmed matching computed sizes.
+- The project index shares the services green sweep and inverse text on hover and keyboard focus. Native pointer hover, Tab focus, and Enter navigation to MSG Farm were checked. All 12 destinations remain.
+- The small carousel instructions now overlap the fan’s lower edge with a desktop top margin of -60px. The phone swipe gallery retains its own 10px margin. The scene has visible overflow and no clip path.
+- The Work navigation label has no project count. The project index still correctly lists 12 projects.
+- Buttons use square corners on the homepage, project, inquiry, and software pages. The mobile menu and form fields are square as well. Larger action arrows were inspected on desktop: 28px in buttons, 24px in text links, and 20px in compact carousel captions.
+- At 398 CSS pixels, the homepage, project 1, contact, and software page had no horizontal page overflow; checked controls had 0px radii, fitting labels, and hit areas at least 44px high.
+- The homepage inquiry button opened /contact/. Name, email, and message fields remain required. The project index toggled closed and open with all 12 links present.
+- The homepage description now emphasizes site planning, landscape design, and 3D visualization, with no mention of interiors in that description.
 
-## Interaction checks
+## Retained interaction evidence
 
-- The mobile menu opens, closes on selection, and closes with Escape while returning focus to the Menu button.
-- Service rows activate with Enter. Images/Description tabs work, and arrow keys switch the active tab and focus.
-- The tools carousel supports native dragging, keyboard focus and software destinations. Visible Pause icons and the project carousel toolbar were removed as requested. Reduced-motion handling, pointer/focus pausing and offscreen/document visibility handling remain.
-- The full index exposes all 12 project links. Same-page homepage links have existing targets. Initial section links resolve after enhancements and fonts settle.
-- Empty inquiry submission focuses the required Name field; name, email and message remain required. The visible copy explains email-draft behavior. No message was sent.
-- Eight project-to-home navigations preserved the merged story, tools and portrait. Responsive reload checks exposed and then verified the fix for a premature image fallback. The final fresh browser tab reported no console warnings or errors.
+Previous baseline browser checks exercised the mobile menu, service expansion and Images/Description tabs, keyboard tab navigation, project fan dragging and arrow keys, software-carousel dragging and destinations, and required empty-form validation. All 12 project routes, the gallery, inquiry, software, and missing-page views were visited in that baseline. The current update retains these behaviors.
 
-## Latest annotation checks before publication
-
-- Seven widths (358, 798, 800, 828, 1149, 1440 and 1919 CSS px) fit horizontally after unclipping the project scene and moving Tools before Design in focus. At 828px, native drags sampled the fan through more than a full turn. Card bounds remained within x384–791 of the viewport, with the lowest sampled edge at y596 before instructions at y621. Scene overflow is visible and its clip path is none.
-- The carousel toolbar, selected-views label and Pause icons control are absent. The software link matches the project-index control's measured font, size, padding, border and radius, and opens the software route. Keyboard arrow rotation works without the removed toolbar.
-- Carousel instructions match Selected Work at 11px. Discuss a Project and Let's Talk have closer underlines while retaining 56px and 44px hit heights.
-- The final continuous About description was checked at 358, 800 and 1112 CSS px. It has only the Hi, I'm Nyco. heading, one large introduction, four body paragraphs and one motto. Paragraph typography is uniform; the introduction-to-body gap matches paragraph spacing (20px phone, 22px desktop). No horizontal overflow or console errors were found.
+The removed carousel toolbar, Selected views label, Pause icons button, and About me / My Story headings remain absent. Reduced-motion preferences, pointer/focus pausing, and offscreen/document-visibility handling remain. The legacy #my-story anchor is preserved.
 
 ## Scope and limits
 
-These are local browser checks and layout measurements, not physical-device tests. Native email-app launch and end-to-end delivery were not tested. External social-account content and loading-speed benchmarks were not audited. The supplied address is retained behind Email me buttons and is not printed as visible page text.
+These checks use a local desktop browser with responsive widths; they are not physical-device tests. No form was submitted and no email app was launched. The form opens a draft for the visitor to review and send, and does not send or store messages. The homepage has one inquiry action; the separate contact page retains Email me without printing the address. External social-account content and performance benchmarks were not audited.
 
-The update remains independent of Framer hosting and uses the existing GitHub Actions Pages workflow. No dependencies, external image services, tracking scripts or mail-service credentials were added.
+No dependencies, tracking scripts, external image services, or mail-service credentials were added. The site remains independent of Framer and uses the existing GitHub Actions Pages workflow.
