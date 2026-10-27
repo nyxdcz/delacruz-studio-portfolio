@@ -5,6 +5,7 @@ const email = 'nyxdcz@gmail.com';
 const siteBase = new URL(document.baseURI).pathname;
 const relativePath = location.pathname.startsWith(siteBase) ? '/' + location.pathname.slice(siteBase.length) : location.pathname;
 const path = relativePath.replace(/\/+$/, '') || '/';
+if (path === '/') document.body.classList.add('home-page');
 const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 function resolveSitePaths(root) {
@@ -18,6 +19,21 @@ function resolveSitePaths(root) {
   });
 }
 resolveSitePaths(document);
+
+function scrollToSectionHash(hash, behavior = 'instant') {
+  if (hash === '#top') window.scrollTo({top:0, left:0, behavior});
+  else document.getElementById(hash.slice(1))?.scrollIntoView({behavior});
+}
+
+const backToTop = document.querySelector('.footer-links a[href$="#top"]');
+backToTop.addEventListener('click', event => {
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  closeMenu();
+  document.querySelector('.brand').focus({preventScroll:true});
+  history.replaceState(null, '', backToTop.href);
+  scrollToSectionHash('#top', matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth');
+});
 
 function closeMenu(returnFocus = false) {
   nav.classList.remove('is-open');
@@ -34,6 +50,68 @@ menu.addEventListener('click', () => {
 nav.addEventListener('click', e => { if (e.target.closest('a')) closeMenu(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && menu.getAttribute('aria-expanded') === 'true') closeMenu(true); });
 document.addEventListener('click', e => { if (!nav.contains(e.target) && !menu.contains(e.target)) closeMenu(); });
+
+
+function setupScrollHeader() {
+  const header = document.querySelector('.site-header');
+  const revealZone = document.createElement('div');
+  revealZone.className = 'header-reveal-zone';
+  revealZone.hidden = true;
+  revealZone.setAttribute('aria-hidden', 'true');
+  header.after(revealZone);
+  let previousY = Math.max(0, window.scrollY);
+  let framePending = false;
+  let pointerInside = false;
+  let openingIntro = path === '/' && previousY <= 2 && (!location.hash || location.hash === '#top');
+
+  const setHidden = hidden => {
+    header.classList.toggle('is-scroll-hidden', hidden);
+    document.body.classList.toggle('is-opening-intro', openingIntro);
+    revealZone.hidden = !hidden || openingIntro;
+  };
+  const update = () => {
+    framePending = false;
+    const y = Math.max(0, window.scrollY);
+    const delta = y - previousY;
+    if (openingIntro && y > 2) openingIntro = false;
+    if (openingIntro) {
+      setHidden(true);
+      previousY = y;
+      return;
+    }
+    const interacting = pointerInside || menu.getAttribute('aria-expanded') === 'true' || header.querySelector(':focus-visible');
+    if (y <= header.offsetHeight || interacting) {
+      setHidden(false);
+    } else if (Math.abs(delta) >= 8) {
+      setHidden(delta > 0);
+    } else {
+      return;
+    }
+    previousY = y;
+  };
+  window.addEventListener('scroll', () => {
+    if (!framePending) {
+      framePending = true;
+      requestAnimationFrame(update);
+    }
+  }, {passive:true});
+  header.addEventListener('pointerenter', event => {
+    if (event.pointerType !== 'touch') pointerInside = true;
+    setHidden(false);
+  });
+  header.addEventListener('pointerleave', () => { pointerInside = false; });
+  header.addEventListener('focusin', () => {
+    openingIntro = false;
+    setHidden(false);
+  });
+  revealZone.addEventListener('pointerenter', () => setHidden(false));
+  window.addEventListener('resize', () => {
+    previousY = Math.max(0, window.scrollY);
+    setHidden(openingIntro);
+  });
+  if (openingIntro) setHidden(true);
+}
+setupScrollHeader();
 
 const featuredIds = [1, 8, 11, 4];
 const displayTitles = {1:'MSG Farm',8:'Wrap Technologies Inc.',11:'Bañas Residence',4:'Verde Plant-Based Café & Resto'};
@@ -58,7 +136,7 @@ function renderHome(projects) {
   document.body.classList.add('home-page');
   const featured = featuredIds.map(id=>projects.find(p=>p.id===id)).filter(Boolean);
   main.innerHTML = `<section class="home-intro editorial-shell" id="intro"><div class="home-intro-copy"><p class="eyebrow">Hi, I’m nyco · Palawan, Philippines</p><h1><span>Architectural &amp;</span><span>landscape design.</span><span>Clearly visualized.</span></h1><p class="home-intro-description">From site planning and landscape design to detailed 3D visualization, I help turn your ideas into thoughtful outdoor spaces.</p><div class="home-intro-actions"><a class="button solid" href="/#work">View Projects <span class="action-arrow" aria-hidden="true">↓</span></a><a class="editorial-text-link" href="/#contact">Discuss a Project</a></div></div><figure class="home-portrait"><img src="${new URL('assets/portrait-preview.png',document.baseURI).href}" srcset="assets/portrait-preview.png 392w, assets/portrait.png 904w" sizes="(min-width: 1435px) 330px, (min-width: 957px) 23vw, (min-width: 800px) 220px, 1px" alt="nyco, architectural and landscape designer" width="392" height="650"></figure></section>
-  <section class="home-work editorial-shell" id="work"><div class="editorial-heading"><div><p class="eyebrow">Selected Work</p><h2>A few projects<br>I’ve shaped.</h2></div><span class="section-index">[${String(projects.length).padStart(2,'0')}]</span></div>${projectCards(featured,true)}<details class="all-projects"><summary>View all ${projects.length} projects</summary><div class="all-project-index">${projects.map(p=>`<a href="/projects/${p.id}/"><span class="index-number">${String(p.id).padStart(3,'0')}</span><span>${escapeHTML(displayTitles[p.id] || p.title)}</span><span class="index-type">${escapeHTML(displayTypes[p.type] || p.type)}</span><span class="action-arrow" aria-hidden="true">↗</span></a>`).join('')}</div><a class="editorial-text-link" href="/projects/">Open the complete gallery</a></details></section>
+  <section class="home-work editorial-shell" id="work"><div class="editorial-heading"><div><p class="eyebrow">Selected Work</p><h2>A few projects<br>I’ve shaped.</h2></div><span class="section-index">[${String(projects.length).padStart(2,'0')}]</span></div>${projectCards(featured,true)}<details class="all-projects"><summary>View all ${projects.length} projects</summary><div class="all-project-index">${projects.map(p=>`<a href="/projects/${p.id}/"><span class="index-number">${String(p.id).padStart(3,'0')}</span><span>${escapeHTML(displayTitles[p.id] || p.title)}</span><span class="index-type">${escapeHTML(displayTypes[p.type] || p.type)}</span><span class="action-arrow" aria-hidden="true">↗</span></a>`).join('')}</div><a class="outline-index-link complete-gallery-link" href="/projects/">Open the complete gallery</a></details></section>
   <section class="home-services editorial-shell" id="services"><div class="editorial-heading"><div><p class="eyebrow">How I can help</p><h2>Services<span class="heading-count">[04]</span></h2></div><p class="section-aside">From the first idea<br>to a clearer picture.</p></div><div class="service-rows">${services.map((service,index)=>{const project=projects.find(p=>p.id===service.project);return `<details class="service-row"><summary><span class="service-index">[${String(index+1).padStart(2,'0')}]</span><h3>${service.title}</h3><span class="service-focus">${service.focus}</span><span class="service-toggle" aria-hidden="true"></span></summary><div class="service-content"><div><p>${service.description}</p>${project?`<a class="editorial-text-link" href="/projects/${project.id}/">View ${escapeHTML(displayTitles[project.id] || project.title)} <span class="action-arrow" aria-hidden="true">↗</span></a>`:''}</div>${project?`<a class="service-example" href="/projects/${project.id}/" aria-label="View ${escapeHTML(project.title)}">${cardImage(project)}</a>`:''}</div></details>`;}).join('')}</div><div class="home-tools" id="tools"><p><strong>The tools I reach for:</strong> AutoCAD, SketchUp, Lumion, Enscape, Photoshop, and Canva.</p><a class="editorial-text-link" href="/tool/software/">View my software</a></div></section>
   <section class="home-about editorial-shell" id="about"><div><p class="eyebrow">The person behind the work</p><h2>Hi, I’m nyco.</h2></div><div><p class="about-lead">I’m a freelance Architectural &amp; Landscape Designer and Professional Architectural Visualizer based in Palawan, Philippines.</p><p class="about-description">I began working in the design field in 2015 while completing my Bachelor of Science in Architecture at Palawan State University. I work independently and collaborate with architects, developers, property owners, and design teams.</p><p class="about-motto">Nurture Concept. Yield Results.</p></div></section>
   <section class="home-contact" id="contact"><div class="editorial-shell"><p class="eyebrow">Let’s talk about your project</p><h2>Have a space<br>in mind?</h2><a class="home-inquiry outline-index-link" href="/contact/">Use the project inquiry form</a></div></section>`;
@@ -134,7 +212,7 @@ async function start() {
     } else renderNotFound();
     resolveSitePaths(main);
     imageFallbacks();
-    if (location.hash) requestAnimationFrame(() => document.getElementById(location.hash.slice(1))?.scrollIntoView());
+    if (location.hash) requestAnimationFrame(() => scrollToSectionHash(location.hash));
   } catch (error) {
     main.innerHTML = `<section class="error-state" role="alert"><h1>The portfolio couldn’t load.</h1><p>Refresh the page to try again, or contact <a href="mailto:${email}">Email me</a>.</p><button class="button" id="retry">Try again</button></section>`;
     document.querySelector('#retry').addEventListener('click', () => location.reload());

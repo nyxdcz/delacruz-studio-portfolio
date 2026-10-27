@@ -17,6 +17,10 @@
   let wheelHovering = false;
   let angle = -18;
   let targetAngle = angle;
+  let tiltX = 0;
+  let tiltY = 0;
+  let targetTiltX = 0;
+  let targetTiltY = 0;
   let previousTime = 0;
   let idleUntil = 0;
   let dragging = false;
@@ -43,7 +47,7 @@
   }
 
   function paintWheel() {
-    if (wheel) wheel.style.transform = `rotateX(-18deg) rotateZ(-8deg) rotateY(${angle}deg)`;
+    if (wheel) wheel.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) rotateX(-18deg) rotateZ(-8deg) rotateY(${angle}deg)`;
   }
 
   function runWheel(time) {
@@ -54,6 +58,8 @@
     const focused = wheel.contains(document.activeElement);
     if (!dragging && !focused && !wheelHovering && time > idleUntil) targetAngle -= delta * .006;
     if (!dragging) angle += (targetAngle - angle) * .1;
+    tiltX += (targetTiltX - tiltX) * .12;
+    tiltY += (targetTiltY - tiltY) * .12;
     paintWheel();
     wheelFrame = requestAnimationFrame(runWheel);
   }
@@ -87,6 +93,16 @@
     scene = orbit.querySelector('.orbit-scene');
     wheel = orbit.querySelector('.orbit-wheel');
     mobileTrack = orbit.querySelector('.orbit-mobile');
+    document.addEventListener('pointermove', event => {
+      if (!wheelVisible || !finePointer.matches || reduced || mobilePreference.matches || dragging || event.pointerType === 'touch') return;
+      const rect = scene.getBoundingClientRect();
+      const x = Math.max(-1, Math.min(1, (event.clientX - rect.left - rect.width / 2) / (rect.width / 2)));
+      const y = Math.max(-1, Math.min(1, (event.clientY - rect.top - rect.height / 2) / (rect.height / 2)));
+      targetTiltX = -y * 10;
+      targetTiltY = x * 14;
+      startWheel();
+    }, {passive:true});
+
     scene.addEventListener('pointerenter',()=>{wheelHovering=true;});
     scene.addEventListener('pointerleave',()=>{wheelHovering=false;});
     scene.addEventListener('keydown',event=>{
@@ -119,6 +135,7 @@
     scene.addEventListener('click',event=>{if(dragged)event.preventDefault();},true);
     window.addEventListener('pointerup',release);
     wheel.querySelectorAll('a').forEach(card=>card.addEventListener('focus',()=>{
+      targetTiltX = targetTiltY = 0;
       const desired=-Number(card.dataset.angle);
       targetAngle=desired+Math.round((angle-desired)/360)*360;
       if(reduced){angle=targetAngle;paintWheel();}
@@ -388,6 +405,10 @@
   function updateMotion(){
     reduced=reducedPreference.matches;
     document.body.classList.toggle('motion-reduced',reduced);
+    if (reduced || mobilePreference.matches || !finePointer.matches) {
+      tiltX = tiltY = targetTiltX = targetTiltY = 0;
+      paintWheel();
+    }
     cancelAnimationFrame(wheelFrame);wheelFrame=0;
     if(reduced)document.querySelectorAll('.motion-reveal').forEach(n=>n.classList.add('is-visible'));
     else startWheel();
@@ -418,6 +439,7 @@
       window.addEventListener('resize',()=>toolsRows.forEach(paintToolsRow),{passive:true});
       reducedPreference.addEventListener('change',updateMotion);
       mobilePreference.addEventListener('change',updateMotion);
+      finePointer.addEventListener('change',updateMotion);
       document.addEventListener('visibilitychange',()=>{
         if(document.hidden){cancelAnimationFrame(wheelFrame);wheelFrame=0;}
         else startWheel();
@@ -425,7 +447,7 @@
       });
       if(location.hash){
         await document.fonts.ready;
-        document.getElementById(location.hash.slice(1))?.scrollIntoView({behavior:'instant'});
+        scrollToSectionHash(location.hash);
       }
     } catch(error){
       console.error('Motion preview could not initialize',error);

@@ -60,3 +60,5 @@ Content reference: https://delacruzstudio.framer.website/ and the supplied Frame
 See `VERIFICATION.md` for checks and known verification limits.
 
 The homepage browser tab is titled Dela Cruz Studio. The supplied 64px DCS PNG icons are bundled without alteration: dark artwork is the default for light browser themes, with light artwork selected for a dark browser color scheme.
+
+The approved opening view shows only the full-height intro and carousel. Navigation and hero actions reveal after scrolling or keyboard access. The header is transparent and returns on upward scroll. The fan follows pointer orientation around its fixed center, its instruction label is hidden, and Back to Top reaches document position zero. Design in focus has no surrounding dividers, and Open the complete gallery uses the shared outlined plus button.

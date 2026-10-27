@@ -9,12 +9,24 @@ The user reviewed the isolated preview and authorized GitHub publication on 27 O
 - JavaScript syntax checks passed for app.js and effects.js.
 - Shared HTML shells were regenerated for all routes, including all 12 case studies, contact, software, and gallery pages.
 
-## Approved local browser evidence
+## Latest approved local browser evidence
+
+- The intro-only opening was measured at 1183×1282: intro top 0, bottom 1282.09, Selected Work top 1282.09, and header bottom -2px. Responsive checks at 358×836, 800×642, and 1440×895 kept following content below the opening view within subpixel rounding and had no horizontal page overflow.
+- First native scroll revealed the header; subsequent down/up scrolling retained hide/reveal behavior. Top-edge pointer reveal and visible keyboard focus were checked. At phone width the menu stayed available while open; Escape closed it and returned focus. Keyboard Enter could reveal/open Menu directly from the opening screen.
+- Header background computed transparent and bottom border 0px while revealed over the gallery. The homepage header is fixed, with sticky positioning on other routes.
+- Both hero actions were hidden initially and visible after scrolling. Their document position stayed 821.10px, height 56px, and hero height 1281.92px, so revealing them caused no layout jump. At 398px the initial actions were hidden and the page fit horizontally.
+- Back to Top reproduced the sticky-anchor failure at scrollY 5388 before the fix. It now reached scrollY 0 from homepage, complete gallery, and phone footers. Initial #top entry also reached zero. View Projects still reached #work at y100.
+- Native pointer movement changed carousel orientation while its anchor stayed left 279.579px/top 253.757px in the 1184px view. A native drag changed the base angle from 42 to 70 degrees without navigation; arrow-key rotation retained card focus. At the 800px breakpoint a sampled tilted fan fit the page. At 358px cursor tilt was zero, the horizontal gallery scrolled to about 264px, and no page overflow was measured. Reduced-motion safeguards were reviewed in source.
+- Open the complete gallery matched the software button’s computed font, padding, border, radius, gap, minimum height, and plus glyph, and opened all 12 project cards.
+- Focus top border, project-caption bottom border, and following About top border were 0px on desktop and phone. The instruction label computed hidden, with all six project links retained.
+- Final captured browser console warnings/errors were empty.
+
+## Retained baseline browser evidence
 
 - At 398, 799, 1184, and 1426 CSS pixels, the About text and portrait occupy adjacent columns, the image meets the contact section with zero measured gap, and all four biography paragraphs remain. No horizontal page overflow was measured. The original portrait proportions are preserved.
 - About and A closer look share the same section heading size. Earlier checks at 358, 798, 800, 988, 1440, and 1910 CSS pixels confirmed matching computed sizes.
 - The project index shares the services green sweep and inverse text on hover and keyboard focus. Native pointer hover, Tab focus, and Enter navigation to MSG Farm were checked. All 12 destinations remain.
-- The small carousel instructions now overlap the fan’s lower edge with a desktop top margin of -60px. The phone swipe gallery retains its own 10px margin. The scene has visible overflow and no clip path.
+- The carousel scene has visible overflow and no clip path. The now-hidden instruction label preserves its spacing so hiding it does not shift the fan.
 - The Work navigation label has no project count. The project index still correctly lists 12 projects.
 - Buttons use square corners on the homepage, project, inquiry, and software pages. The mobile menu and form fields are square as well. Larger action arrows were inspected on desktop: 28px in buttons, 24px in text links, and 20px in compact carousel captions.
 - At 398 CSS pixels, the homepage, project 1, contact, and software page had no horizontal page overflow; checked controls had 0px radii, fitting labels, and hit areas at least 44px high.

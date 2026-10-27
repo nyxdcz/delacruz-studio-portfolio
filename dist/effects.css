@@ -50,12 +50,13 @@
 .service-description-panel{padding-block:8px;max-width:660px}
 .service-description-panel p{font-size:clamp(1.125rem,1.8vw,1.5rem);line-height:1.5}
 .service-description-panel .editorial-text-link{margin-top:20px}
-.focus-study{padding-block:42px 0;border-top:1px solid var(--line)}
+.focus-study{padding-block:42px 0}
+.focus-study+.home-about{border-top:0}
 .focus-scroll{height:140svh;min-height:780px;max-height:1500px}
 .focus-sticky{position:sticky;top:16px;height:calc(100svh - 32px);display:flex;align-items:flex-start;justify-content:center;padding-top:16px}
 .focus-image{width:100%;display:block;transform:scale(var(--focus-scale,.68));transform-origin:top center;will-change:transform}
 .focus-image img{width:100%;height:auto;max-height:75svh;aspect-ratio:1.85;object-fit:cover}
-.focus-caption{display:flex;gap:20px;justify-content:space-between;padding-block:14px;border-bottom:1px solid var(--line)}
+.focus-caption{display:flex;gap:20px;justify-content:space-between;padding-block:14px}
 .motion-ready .about-lead{font-size:clamp(1.5rem,3.2vw,2.5rem);font-weight:500;line-height:1.15;letter-spacing:-.035em}
 .statement-word{color:#687161;transition:color .18s ease}
 .statement-word.is-read{color:var(--ink)}
@@ -221,3 +222,12 @@
 
 .orbit-caption .action-arrow{font-size:1.25rem}
 .service-motion-example .action-arrow,.focus-caption .action-arrow{margin-left:8px}
+
+.home-intro.intro-with-orbit{min-height:100svh;align-content:center}
+.home-intro.intro-with-orbit .intro-projects{align-self:center;margin-top:0}
+
+.home-intro-actions{transition:opacity .2s ease}
+.home-page.is-opening-intro .home-intro-actions{opacity:0;visibility:hidden;pointer-events:none}
+@media(prefers-reduced-motion:reduce){.home-intro-actions{transition:none}}
+
+.intro-projects .orbit-instruction{visibility:hidden}
