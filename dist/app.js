@@ -22,7 +22,13 @@ resolveSitePaths(document);
 
 function scrollToSectionHash(hash, behavior = 'instant') {
   if (hash === '#top') window.scrollTo({top:0, left:0, behavior});
-  else document.getElementById(hash.slice(1))?.scrollIntoView({behavior});
+  else {
+    const target = document.getElementById(hash.slice(1));
+    if (target) {
+      const clearance = document.querySelector('.site-header').offsetHeight + 24;
+      window.scrollTo({top:Math.max(0, window.scrollY + target.getBoundingClientRect().top - clearance), behavior});
+    }
+  }
 }
 
 const backToTop = document.querySelector('.footer-links a[href$="#top"]');
@@ -65,6 +71,7 @@ function setupScrollHeader() {
   let openingIntro = path === '/' && previousY <= 2 && (!location.hash || location.hash === '#top');
 
   const setHidden = hidden => {
+    header.classList.toggle('is-over-content', window.scrollY > header.offsetHeight);
     header.classList.toggle('is-scroll-hidden', hidden);
     document.body.classList.toggle('is-opening-intro', openingIntro);
     revealZone.hidden = !hidden || openingIntro;
@@ -138,8 +145,13 @@ function renderHome(projects) {
   main.innerHTML = `<section class="home-intro editorial-shell" id="intro"><div class="home-intro-copy"><p class="eyebrow">Hi, I’m nyco · Palawan, Philippines</p><h1><span>Architectural &amp;</span><span>landscape design.</span><span>Clearly visualized.</span></h1><p class="home-intro-description">From site planning and landscape design to detailed 3D visualization, I help turn your ideas into thoughtful outdoor spaces.</p><div class="home-intro-actions"><a class="button solid" href="/#work">View Projects <span class="action-arrow" aria-hidden="true">↓</span></a><a class="editorial-text-link" href="/#contact">Discuss a Project</a></div></div><figure class="home-portrait"><img src="${new URL('assets/portrait-preview.png',document.baseURI).href}" srcset="assets/portrait-preview.png 392w, assets/portrait.png 904w" sizes="(min-width: 1435px) 330px, (min-width: 957px) 23vw, (min-width: 800px) 220px, 1px" alt="nyco, architectural and landscape designer" width="392" height="650"></figure></section>
   <section class="home-work editorial-shell" id="work"><div class="editorial-heading"><div><p class="eyebrow">Selected Work</p><h2>A few projects<br>I’ve shaped.</h2></div><span class="section-index">[${String(projects.length).padStart(2,'0')}]</span></div>${projectCards(featured,true)}<details class="all-projects"><summary>View all ${projects.length} projects</summary><div class="all-project-index">${projects.map(p=>`<a href="/projects/${p.id}/"><span class="index-number">${String(p.id).padStart(3,'0')}</span><span>${escapeHTML(displayTitles[p.id] || p.title)}</span><span class="index-type">${escapeHTML(displayTypes[p.type] || p.type)}</span><span class="action-arrow" aria-hidden="true">↗</span></a>`).join('')}</div><a class="outline-index-link complete-gallery-link" href="/projects/">Open the complete gallery</a></details></section>
   <section class="home-services editorial-shell" id="services"><div class="editorial-heading"><div><p class="eyebrow">How I can help</p><h2>Services<span class="heading-count">[04]</span></h2></div><p class="section-aside">From the first idea<br>to a clearer picture.</p></div><div class="service-rows">${services.map((service,index)=>{const project=projects.find(p=>p.id===service.project);return `<details class="service-row"><summary><span class="service-index">[${String(index+1).padStart(2,'0')}]</span><h3>${service.title}</h3><span class="service-focus">${service.focus}</span><span class="service-toggle" aria-hidden="true"></span></summary><div class="service-content"><div><p>${service.description}</p>${project?`<a class="editorial-text-link" href="/projects/${project.id}/">View ${escapeHTML(displayTitles[project.id] || project.title)} <span class="action-arrow" aria-hidden="true">↗</span></a>`:''}</div>${project?`<a class="service-example" href="/projects/${project.id}/" aria-label="View ${escapeHTML(project.title)}">${cardImage(project)}</a>`:''}</div></details>`;}).join('')}</div><div class="home-tools" id="tools"><p><strong>The tools I reach for:</strong> AutoCAD, SketchUp, Lumion, Enscape, Photoshop, and Canva.</p><a class="editorial-text-link" href="/tool/software/">View my software</a></div></section>
-  <section class="home-about editorial-shell" id="about"><div><p class="eyebrow">The person behind the work</p><h2>Hi, I’m nyco.</h2></div><div><p class="about-lead">I’m a freelance Architectural &amp; Landscape Designer and Professional Architectural Visualizer based in Palawan, Philippines.</p><p class="about-description">I began working in the design field in 2015 while completing my Bachelor of Science in Architecture at Palawan State University. I work independently and collaborate with architects, developers, property owners, and design teams.</p><p class="about-motto">Nurture Concept. Yield Results.</p></div></section>
+  <section class="home-about editorial-shell" id="about" aria-labelledby="about-heading"><div><p class="eyebrow">The person behind the work</p><h2 id="about-heading">Hi, I’m Nyco.</h2></div><div><p class="about-lead">I’m a freelance Architectural &amp; Landscape Designer and Professional Architectural Visualizer based in Palawan, Philippines.</p><div class="about-story story-copy" id="my-story"><p>I began working in design in 2015 while completing my Bachelor of Science in Architecture at Palawan State University.</p><p>My work covers site and master planning, landscape and architectural design, interiors, and 3D visualization. I develop concepts, presentation drawings, photorealistic renderings, and design documentation.</p><p>I work independently and collaborate with architects, developers, property owners, and design teams, starting with the site, the client’s needs, and the purpose of each space.</p><p class="story-motto">Nurture Concept. Yield Results.</p></div></div></section>
   <section class="home-contact" id="contact"><div class="editorial-shell"><p class="eyebrow">Let’s talk about your project</p><h2>Have a space<br>in mind?</h2><a class="home-inquiry outline-index-link" href="/contact/">Use the project inquiry form</a></div></section>`;
+}
+
+function renderGallery(projects) {
+  document.title = 'Projects | Dela Cruz Studio.';
+  main.innerHTML = `<section class="work gallery-index section-shell" id="work"><div class="section-heading"><p class="eyebrow">Selected Work</p><h1 class="section-title">A few projects I’m proud to have shaped.</h1></div>${projectCards(projects)}</section>`;
 }
 
 function renderProject(projects, id) {
@@ -205,17 +217,19 @@ async function start() {
       const projects = await response.json();
       if (!Array.isArray(projects)) throw new Error('Invalid portfolio data');
       if (path === '/') renderHome(projects);
-      else if (path === '/projects') {
-        document.title = 'Projects | Dela Cruz Studio.';
-        main.innerHTML = `<section class="work gallery-index section-shell" id="work"><div class="section-heading"><p class="eyebrow">Selected Work</p><h1 class="section-title">A few projects I’m proud to have shaped.</h1></div>${projectCards(projects)}</section>`;
-      } else renderProject(projects, Number(path.split('/').pop()));
+      else if (path === '/projects') renderGallery(projects);
+      else renderProject(projects, Number(path.split('/').pop()));
     } else renderNotFound();
     resolveSitePaths(main);
     imageFallbacks();
     if (location.hash) requestAnimationFrame(() => scrollToSectionHash(location.hash));
   } catch (error) {
+    if (main.querySelector('h1')) return;
     main.innerHTML = `<section class="error-state" role="alert"><h1>The portfolio couldn’t load.</h1><p>Refresh the page to try again, or contact <a href="mailto:${email}">Email me</a>.</p><button class="button" id="retry">Try again</button></section>`;
     document.querySelector('#retry').addEventListener('click', () => location.reload());
+  } finally {
+    document.body.dataset.pageReady = 'true';
+    document.dispatchEvent(new Event('portfolio:ready'));
   }
 }
 start();

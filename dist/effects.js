@@ -11,7 +11,6 @@
   const title = p => titles[p.id] || p.title;
   let initialized = false;
   let reduced = reducedPreference.matches;
-  let scrollFrame = 0;
   let wheelFrame = 0;
   let wheelVisible = false;
   let wheelHovering = false;
@@ -31,9 +30,6 @@
   let wheel;
   let scene;
   let mobileTrack;
-  let statementWords = [];
-  let focusScroll;
-  let focusImage;
   let toolsSection;
   let toolsRows = [];
   let toolsFrame = 0;
@@ -164,6 +160,7 @@
     const portraitImage=portrait.querySelector('img');
     if(portraitImage)portraitImage.sizes='(max-width: 642px) 28vw, (max-width: 799px) 180px, (max-width: 1199px) 32vw, (max-width: 1421px) 38vw, 540px';
     about.replaceChildren(content,portrait);
+    about.classList.add('combined-about');
     intro.classList.add('intro-with-orbit');
   }
 
@@ -180,33 +177,6 @@
       panel.className='service-motion-content';
       panel.innerHTML=`<div class="service-tabs" role="tablist" aria-label="${escape(row.querySelector('h3').textContent)} content"><button type="button" role="tab" id="${prefix}-images-tab" aria-controls="${prefix}-images" aria-selected="true">Images</button><span aria-hidden="true">/</span><button type="button" role="tab" id="${prefix}-description-tab" aria-controls="${prefix}-description" aria-selected="false" tabindex="-1">Description</button></div><div class="service-tab-stage"><div class="service-image-panel" id="${prefix}-images" role="tabpanel" aria-labelledby="${prefix}-images-tab">${examples.map(example=>`<a href="${projectURL(example.id)}" class="service-motion-example">${picture(example)}<span>${escape(title(example))} <span class="action-arrow" aria-hidden="true">↗</span></span></a>`).join('')}</div><div class="service-description-panel" id="${prefix}-description" role="tabpanel" aria-labelledby="${prefix}-description-tab" hidden><p>${escape(description)}</p><a class="editorial-text-link" href="${projectURL(p.id)}">View ${escape(title(p))} <span class="action-arrow" aria-hidden="true">↗</span></a></div></div>`;
       original.replaceWith(panel);
-      const summary=row.querySelector('summary');
-      let drawerAnimation;
-      let expanded=row.open;
-      summary.addEventListener('click',event=>{
-        event.preventDefault();
-        expanded=!expanded;
-        const start=row.getBoundingClientRect().height;
-        row.style.height=`${start}px`;
-        drawerAnimation?.cancel();
-        if(reduced){
-          row.open=expanded;
-          row.style.height='';
-          row.style.overflow='';
-          return;
-        }
-        row.open=true;
-        row.style.height='';
-        const end=expanded?row.getBoundingClientRect().height:summary.getBoundingClientRect().height+1;
-        row.style.overflow='hidden';
-        drawerAnimation=row.animate([{height:`${start}px`},{height:`${end}px`}],{duration:300,easing:'cubic-bezier(.22,1,.36,1)'});
-        drawerAnimation.onfinish=()=>{
-          row.open=expanded;
-          row.style.height='';
-          row.style.overflow='';
-          drawerAnimation=null;
-        };
-      });
       const tabs=[...panel.querySelectorAll('[role="tab"]')];
       function activate(tab,focus=false){
         tabs.forEach(button=>{
@@ -311,17 +281,7 @@
     toolsSection.addEventListener('focusin',event=>{toolsFocused=event.target.classList.contains('tool-logo-link');refreshToolsMotion();});
     toolsSection.addEventListener('focusout',()=>setTimeout(()=>{toolsFocused=toolsSection.contains(document.activeElement)&&document.activeElement.classList.contains('tool-logo-link');refreshToolsMotion();},0));
     new IntersectionObserver(entries=>{toolsVisible=entries[0].isIntersecting;refreshToolsMotion();},{threshold:.05}).observe(toolsSection);
-    const introduction="I'm a freelance Architectural & Landscape Designer and Professional Architectural Visualizer based in Palawan, Philippines.";
-    const paragraphs=[
-      "I began working in the design field in 2015 while completing my Bachelor of Science in Architecture at Palawan State University.",
-      "My work includes architectural design, landscape design, master planning, spatial planning, interior design, 3D modeling, and high-quality architectural visualization for residential, commercial, hospitality, and mixed-use projects. I support each project from site analysis and concept development to presentation drawings, photorealistic renderings, and design documentation.",
-      "I believe good design begins with understanding the site, the client, and the purpose of the project. My approach combines careful planning, practical design thinking, and clear visual communication to create spaces that are thoughtful, buildable, and connected to their surroundings.",
-      "I work independently and collaborate with architects, developers, property owners, interior designers, and multidisciplinary teams. Every project is different, but my goal remains the same: to transform strong ideas into functional, context-driven, and visually engaging spaces."
-    ];
-    const about=document.querySelector('.home-about');
-    about.classList.add('combined-about');
-    about.setAttribute('aria-labelledby','about-heading');
-    about.querySelector('.about-content').innerHTML=`<header class="about-heading"><p class="eyebrow">The person behind the work</p><h2 id="about-heading">Hi, I’m Nyco.</h2></header><div class="about-biography"><p class="about-lead">${escape(introduction)}</p><div class="about-story story-copy" id="my-story">${paragraphs.map(p=>`<p>${escape(p)}</p>`).join('')}<p class="story-motto">Nurture Concept. Yield Results.</p></div></div>`;
+
   }
 
   function setupFocus(projects){
@@ -331,76 +291,7 @@
     section.className='focus-study editorial-shell';
     section.innerHTML=`<div class="editorial-heading"><div><p class="eyebrow">Design in focus</p><h2>A closer look.</h2></div><span class="section-index">[${String(p.id).padStart(3,'0')}]</span></div><div class="focus-scroll"><div class="focus-sticky"><a class="focus-image" href="${projectURL(p.id)}" aria-label="View ${escape(title(p))}">${picture(p)}<span class="focus-caption"><span>${escape(title(p))}</span><span>Explore this project <span class="action-arrow" aria-hidden="true">↗</span></span></span></a></div></div>`;
     document.querySelector('.home-about').before(section);
-    focusScroll=section.querySelector('.focus-scroll');
-    focusImage=section.querySelector('.focus-image');
   }
-
-  function setupRollingText(){
-    document.querySelectorAll('#main-nav a,.home-intro-actions a,.editorial-text-link').forEach(link=>{
-      if(link.querySelector('.roll-window'))return;
-      const label=link.textContent.trim();
-      if(!link.hasAttribute('aria-label'))link.setAttribute('aria-label',label);
-      [...link.childNodes].filter(n=>n.nodeType===Node.TEXT_NODE&&n.textContent.trim()).forEach(node=>{
-        const wrapper=document.createElement('span');
-        wrapper.className='roll-window';
-        wrapper.setAttribute('aria-hidden','true');
-        const letters=[...node.textContent.trim()].map((letter,i)=>`<span style="--letter:${Math.min(i,18)}">${letter===' '?'&nbsp;':escape(letter)}</span>`).join('');
-        wrapper.innerHTML=`<span class="roll-line">${letters}</span><span class="roll-line roll-copy">${letters}</span>`;
-        node.replaceWith(wrapper);
-      });
-    });
-  }
-
-  function setupReveals(){
-    const elements=[...document.querySelectorAll('.home-work .editorial-heading h2,.editorial-project,.service-row,.home-about h2,.home-contact h2,.focus-study .editorial-heading h2')];
-    const observer=new IntersectionObserver(entries=>{
-      entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target);}});
-    },{threshold:.1,rootMargin:'0px 0px -24px 0px'});
-    elements.forEach((element,i)=>{
-      element.classList.add('motion-reveal');
-      element.style.setProperty('--reveal-delay',`${element.classList.contains('editorial-project')?i%2*80:0}ms`);
-      observer.observe(element);
-    });
-  }
-
-  function setupStatement(){
-    const statement=document.querySelector('.about-lead');
-    statement.innerHTML=statement.textContent.split(/\s+/).map(word=>`<span class="statement-word">${escape(word)}</span>`).join(' ');
-    statementWords=[...statement.children];
-  }
-
-  function setupCursor(){
-    const cursor=document.createElement('div');
-    cursor.className='project-cursor';
-    cursor.textContent='[ VIEW PROJECT ]';
-    cursor.setAttribute('aria-hidden','true');
-    document.body.append(cursor);
-    document.addEventListener('pointermove',event=>{
-      const active=finePointer.matches&&!reduced&&event.target.closest('.editorial-project-photo,.orbit-card,.focus-image,.service-motion-example');
-      cursor.classList.toggle('is-visible',Boolean(active));
-      if(active){cursor.style.left=`${event.clientX}px`;cursor.style.top=`${event.clientY}px`;}
-    },{passive:true});
-    document.addEventListener('pointerleave',()=>cursor.classList.remove('is-visible'));
-    window.addEventListener('scroll',()=>cursor.classList.remove('is-visible'),{passive:true});
-  }
-
-  function updateScroll(){
-    scrollFrame=0;
-    const height=innerHeight;
-    if(focusScroll){
-      const rect=focusScroll.getBoundingClientRect();
-      const progress=Math.max(0,Math.min(1,-rect.top/Math.max(1,rect.height-height)));
-      focusImage.style.setProperty('--focus-scale',reduced||mobilePreference.matches?1:.68+.32*progress);
-    }
-    const statement=document.querySelector('.about-lead');
-    if(statement){
-      const rect=statement.getBoundingClientRect();
-      const progress=Math.max(0,Math.min(1,(height*.86-rect.top)/(height*.43+rect.height*.2)));
-      statementWords.forEach((word,i)=>word.classList.toggle('is-read',reduced||i/statementWords.length<progress));
-    }
-  }
-
-  function scheduleScroll(){if(!scrollFrame)scrollFrame=requestAnimationFrame(updateScroll);}
 
   function updateMotion(){
     reduced=reducedPreference.matches;
@@ -410,10 +301,8 @@
       paintWheel();
     }
     cancelAnimationFrame(wheelFrame);wheelFrame=0;
-    if(reduced)document.querySelectorAll('.motion-reveal').forEach(n=>n.classList.add('is-visible'));
-    else startWheel();
+    if(!reduced)startWheel();
     refreshToolsMotion();
-    updateScroll();
   }
 
   async function initialize(){
@@ -428,14 +317,8 @@
       setupToolsAndStory();
       setupServices(projects);
       setupFocus(projects);
-      setupRollingText();
-      setupStatement();
-      setupReveals();
-      setupCursor();
       document.body.classList.add('motion-ready');
       updateMotion();
-      window.addEventListener('scroll',scheduleScroll,{passive:true});
-      window.addEventListener('resize',scheduleScroll,{passive:true});
       window.addEventListener('resize',()=>toolsRows.forEach(paintToolsRow),{passive:true});
       reducedPreference.addEventListener('change',updateMotion);
       mobilePreference.addEventListener('change',updateMotion);
@@ -453,7 +336,6 @@
       console.error('Motion preview could not initialize',error);
     }
   }
-  const observer=new MutationObserver(()=>{if(document.querySelector('.home-work')){observer.disconnect();initialize();}});
-  if(document.querySelector('.home-work'))initialize();
-  else observer.observe(main,{childList:true});
+  if(document.body.dataset.pageReady === 'true')initialize();
+  else document.addEventListener('portfolio:ready',initialize,{once:true});
 })();

@@ -1,0 +1,29 @@
+import assert from 'node:assert/strict';
+import {readFile,access} from 'node:fs/promises';
+import {join} from 'node:path';
+const output=process.argv[2]||'dist';
+const configuredBase='/' + (process.env.SITE_BASE_PATH||'').split('/').filter(Boolean).join('/') + '/';
+const base=process.argv[3]||(configuredBase==='//'?'/':configuredBase);
+const projects=JSON.parse(await readFile('dist/projects.json','utf8'));
+const routes=['','contact','tool','tool/software','projects',...projects.map(p=>`projects/${p.id}`)];
+for(const route of routes){
+  const html=await readFile(join(output,route,'index.html'),'utf8');
+  const main=html.match(/<main[^>]*>([\s\S]*?)<\/main>/)?.[1];
+  assert(main?.includes('<h1'),`${route}: content absent from delivered HTML`);
+  assert(!main.includes('Loading the portfolio'),`${route}: loading shell delivered`);
+  assert(html.includes(`<base href="${base}">`),`${route}: incorrect base`);
+  assert(!html.includes('portfolio-build.invalid'),`${route}: build origin leaked`);
+  assert(!html.includes(`${base}${base.slice(1)}`)||base==='/',`${route}: duplicated prefix`);
+  for(const match of html.matchAll(/(?:href|src)="(\/[^"#?]*)[^\"]*"/g)){
+    const value=match[1];assert(value.startsWith(base),`${route}: unprefixed local destination ${value}`);
+    const relative=value.slice(base.length);
+    if(relative&&!relative.endsWith('/'))await access(join(output,relative));
+  }
+  if(route==='projects')assert.equal((main.match(/class="editorial-project"/g)||[]).length,12,'gallery must contain all projects');
+  if(route==='contact'){
+    assert(main.includes('type="email"')&&main.includes('name="message"'),'inquiry fields missing');
+    assert(html.includes('.menu-toggle,.contact-form{display:none}'),'no-script inquiry must not submit without its draft handler');
+  }
+  if(route.startsWith('projects/'))assert(main.includes('class="detail-image"'),'case study image absent');
+}
+console.log(`Verified static content, route destinations, assets and inquiry fallback across ${routes.length} pages at ${base}.`);

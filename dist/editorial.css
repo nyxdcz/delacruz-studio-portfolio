@@ -1,3 +1,4 @@
+/* Hallmark · checked: 2026-10-28 · genre: editorial (inferred) · built: the project · redesign: polish · v2.0.0 */
 @font-face{font-family:InterDisplay;src:url('assets/inter-display-regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:InterDisplay;src:url('assets/inter-display-medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
 @font-face{font-family:MartianMono;src:url('assets/martian-mono.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
@@ -188,3 +189,5 @@ h1,h2,h3{font-family:var(--display-font);font-weight:500;letter-spacing:-.04em;t
 @media(prefers-reduced-motion:reduce){.site-header{transition:none}}
 
 .home-page .site-header{position:fixed;left:0;right:0;width:100%}
+
+.site-header.is-over-content{background:var(--ground)}

@@ -27,7 +27,9 @@ jobs:
         id: pages
         uses: actions/configure-pages@v5
       - name: Build static pages
-        run: node build.mjs
+        run: |
+          node build.mjs
+          node verify-static.mjs _site
         env:
           SITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
           SITE_OUTPUT_DIR: _site

@@ -1,3 +1,4 @@
+/* Hallmark · checked: 2026-10-28 · genre: editorial (inferred) · built: the project · redesign: polish · v2.0.0 */
 .home-intro.intro-with-orbit{--hero-space:clamp(22px,2.4vw,34px);grid-template-columns:minmax(0,1.02fr) minmax(0,1fr);gap:0;min-height:clamp(680px,67.95vw,924px);padding:72px var(--hero-space) 48px}
 .home-intro.intro-with-orbit h1{font-size:clamp(2rem,5vw,4.5rem)}
 .intro-projects{min-width:0;padding:0;border:0;align-self:start;margin-top:8px;position:relative;z-index:1}
@@ -24,19 +25,9 @@
 .orbit-caption>span:first-child{font-variant-numeric:tabular-nums;color:var(--muted)}
 .orbit-card:focus-visible{outline:3px solid var(--ink);outline-offset:5px}
 .orbit-mobile{display:none}
-.roll-window{display:inline-grid;overflow:hidden;line-height:1.45;vertical-align:bottom}
-.roll-line{grid-area:1/1;white-space:nowrap;display:flex}
-.roll-line>span{display:inline-block;transition:transform .38s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--letter)*9ms)}
-.roll-copy>span{transform:translateY(110%)}
-:is(a,button):is(:hover,:focus-visible)>.roll-window .roll-line:not(.roll-copy)>span{transform:translateY(-110%)}
-:is(a,button):is(:hover,:focus-visible)>.roll-window .roll-copy>span{transform:translateY(0)}
 .editorial-text-link:hover{text-decoration:none}
-.project-cursor{position:fixed;z-index:100;pointer-events:none;background:var(--ground);color:var(--ink);padding:8px 12px;transform:translate(-50%,-150%) scale(.9);opacity:0;transition:opacity .15s,transform .2s;border:1px solid var(--ink);white-space:nowrap}
-.project-cursor.is-visible{opacity:1;transform:translate(-50%,-150%) scale(1)}
 .editorial-project-photo img{transition:transform .65s cubic-bezier(.22,1,.36,1)}
 .editorial-project:is(:hover,:focus-visible) .editorial-project-photo img{transform:scale(1.045)}
-.motion-ready .motion-reveal{transition:opacity .65s ease,transform .65s cubic-bezier(.22,1,.36,1);transition-delay:var(--reveal-delay,0ms)}
-.motion-ready .motion-reveal:not(.is-visible){opacity:0;transform:translateY(22px)}
 .service-motion-content{padding:0 0 28px 63px}
 .service-tabs{display:flex;gap:12px;align-items:center;margin-bottom:18px}
 .service-tabs button{background:none;border:0;border-bottom:1px solid transparent;padding:10px 0;min-height:44px;font:inherit;text-transform:uppercase;color:var(--muted)}
@@ -58,12 +49,6 @@
 .focus-image img{width:100%;height:auto;max-height:75svh;aspect-ratio:1.85;object-fit:cover}
 .focus-caption{display:flex;gap:20px;justify-content:space-between;padding-block:14px}
 .motion-ready .about-lead{font-size:clamp(1.5rem,3.2vw,2.5rem);font-weight:500;line-height:1.15;letter-spacing:-.035em}
-.statement-word{color:#687161;transition:color .18s ease}
-.statement-word.is-read{color:var(--ink)}
-.motion-reduced .motion-reveal{opacity:1!important;transform:none!important;transition:none!important}
-.motion-reduced .roll-line>span{transition:none!important;transform:none!important}
-.motion-reduced .roll-copy{display:none}
-.motion-reduced .project-cursor{display:none}
 .motion-reduced .focus-scroll{height:auto;min-height:0;padding-block:20px 50px}
 .motion-reduced .focus-sticky{position:static;height:auto}
 .motion-reduced .focus-image{transform:none;will-change:auto}
@@ -92,9 +77,6 @@
 }
 @media(max-width:350px){.service-motion-content{padding-left:0}.orbit-caption{font-size:.6875rem}}
 @media(prefers-reduced-motion:reduce){
-  .roll-line>span,.motion-reveal,.statement-word{transition:none!important}
-  .roll-copy{display:none}
-  .motion-ready .motion-reveal{opacity:1!important;transform:none!important}
 }
 
 @media(min-width:800px){
@@ -203,8 +185,6 @@
 .combined-about .about-heading h2{text-transform:uppercase;font-size:var(--section-heading-size);line-height:1;letter-spacing:-.04em}
 .combined-about .home-portrait{align-self:end;margin-top:0;max-width:540px}
 .combined-about .about-lead{font-size:clamp(1.5rem,3.2vw,2.5rem);font-weight:500;line-height:1.15;letter-spacing:-.035em;max-width:none}
-.combined-about .about-lead .statement-word{color:var(--muted)}
-.combined-about .about-lead .statement-word.is-read{color:var(--ink)}
 .about-story{margin-top:22px}
 @media(max-width:1199px){
   .combined-about{grid-template-columns:minmax(0,1fr) clamp(220px,32vw,380px)}
@@ -238,3 +218,13 @@
   .intro-projects .orbit-card{width:var(--orbit-card-size)}
   .intro-projects .orbit-wheel{top:calc(50% - var(--orbit-card-size)*.14)}
 }
+
+/* Hallmark polish keeps the project fan; supporting content stays still and visible. */
+.focus-scroll{height:auto;min-height:0;max-height:none;padding-bottom:48px}
+.focus-sticky{position:static;height:auto;padding-top:16px}
+.focus-image{max-width:1100px;margin-inline:auto;transform:none;will-change:auto}
+.editorial-project-photo img,.tool-logo,.tool-logo-label{transition:opacity .2s ease}
+.editorial-project:is(:hover,:focus-visible) .editorial-project-photo img{transform:none}
+.tool-logo-link:is(:hover,:focus-visible) .tool-logo{transform:none}
+.tool-logo-label{transform:none}
+@media(max-width:799px){.focus-scroll{padding-bottom:32px}}

@@ -20,11 +20,12 @@ Open http://127.0.0.1:43821. No package installation is required; the build need
 - `dist/app.js`: page content, navigation, contact behavior, and rendering.
 - `dist/style.css`: base styles, project and contact layouts, and focus styles.
 - `dist/editorial.css`: approved editorial homepage, shared navigation/footer, numbered gallery, and expandable services.
-- `dist/effects.js` and `dist/effects.css`: project carousel, two-row tools carousel, service tabs and transitions, merged About section, and motion/accessibility handling.
+- `dist/effects.js` and `dist/effects.css`: project carousel, two-row tools carousel, service tabs, compact project feature, and motion/accessibility handling.
 - `dist/projects.json`: all 12 project titles, locations, dates, types, and descriptions.
 - `dist/assets/`: locally bundled images and fonts.
 - `dist/index.html`: shared page shell and metadata.
-- `build.mjs`: creates static folders for each route. Run this after editing the shared HTML or project list.
+- `build.mjs` and `render-static.mjs`: generate content-filled pages for every route using the shared page render functions. Rebuild after editing content, rendering, metadata or project data.
+- `verify-static.mjs`: checks built content, local destinations, assets, gallery completeness and the no-script inquiry fallback; GitHub Pages runs it before deployment.
 - `tools/prepare-images.py`: macOS helper to regenerate 680px and 1280px gallery images from the original project files. These derivatives are committed, so CI does not need this helper.
 
 ## Host independently
@@ -55,10 +56,13 @@ The contact address is `nyxdcz@gmail.com`. It is available through the inquiry p
 
 ## Reference and scope
 
-Content reference: https://delacruzstudio.framer.website/ and the supplied Framer desktop project. The approved update preserves DCS branding and original imagery while adopting the editorial typography, project numbering and interactions discussed using https://titarvl.framer.website/ as a reference. The homepage includes an unclipped project fan beside the introduction, four featured projects, the full 12-project index, expandable services with image/description tabs, a two-row interactive tools carousel before the scrolling project feature, and one continuous About description beside an enlarged portrait that meets the right edge and the green contact section. Project index rows share the service hover and keyboard-focus sweep. Buttons use consistent square corners across the homepage, case studies, contact and software pages, with larger action arrows. The Work navigation label has no count. Case studies retain original descriptions and full-resolution images. The user requested removal of the carousel toolbar, Pause icons, Selected views and the About me / My Story labels. Hover/focus pausing, reduced-motion preferences and offscreen/document visibility handling remain. On phones, the project fan becomes a horizontal swipe gallery.
+Content reference: https://delacruzstudio.framer.website/ and the supplied Framer desktop project. The approved update preserves DCS branding and original imagery while adopting the editorial typography, project numbering and interactions discussed using https://titarvl.framer.website/ as a reference. The homepage includes an unclipped project fan beside the introduction, four featured projects, the full 12-project index, expandable services with image/description tabs, a two-row interactive tools carousel before the compact static project feature, and one continuous About description beside an enlarged portrait that meets the right edge and the green contact section. Project index rows share the service hover and keyboard-focus sweep. Buttons use consistent square corners across the homepage, case studies, contact and software pages, with larger action arrows. The Work navigation label has no count. Case studies retain original descriptions and full-resolution images. The user requested removal of the carousel toolbar, Pause icons, Selected views and the About me / My Story labels. Hover/focus pausing, reduced-motion preferences and offscreen/document visibility handling remain. On phones, the project fan becomes a horizontal swipe gallery.
 
 See `VERIFICATION.md` for checks and known verification limits.
 
 The homepage browser tab is titled Dela Cruz Studio. The supplied 64px DCS PNG icons are bundled without alteration: dark artwork is the default for light browser themes, with light artwork selected for a dark browser color scheme.
 
-The approved opening view shows only the full-height intro and carousel. Navigation and hero actions reveal after scrolling or keyboard access. The header is transparent and returns on upward scroll. The fan follows pointer orientation around its fixed center, its instruction label is hidden, and Back to Top reaches document position zero. Design in focus has no surrounding dividers, and Open the complete gallery uses the shared outlined plus button.
+The approved opening view shows only the full-height intro and carousel. Navigation and hero actions reveal after scrolling or keyboard access. The header returns on upward scroll; it is transparent near the top and uses the DCS ground color when revealed over scrolled content. The fan follows pointer orientation around its fixed center, its instruction label is hidden, and Back to Top reaches document position zero. Design in focus has no surrounding dividers, and Open the complete gallery uses the shared outlined plus button.
+
+
+The reviewed Hallmark polish keeps the project fan and tools carousel while simplifying supporting effects. Core page content is included in the delivered HTML, including all 12 case studies. With scripting off, native project/service disclosures and navigation remain available; inquiry uses the email link rather than an inactive draft form. Run `node verify-static.mjs` after a root build, or `SITE_BASE_PATH=/delacruz-studio-portfolio/ node verify-static.mjs _site` after a Pages build.
