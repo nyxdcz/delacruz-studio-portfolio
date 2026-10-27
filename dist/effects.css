@@ -231,3 +231,10 @@
 @media(prefers-reduced-motion:reduce){.home-intro-actions{transition:none}}
 
 .intro-projects .orbit-instruction{visibility:hidden}
+
+@media(min-width:800px){
+  .intro-projects{--orbit-card-size:min(clamp(300px,43.4vw,590px),calc((100svh - 96px)*.84))}
+  .intro-projects .orbit-scene{height:min(clamp(380px,45.6vw,660px),calc(100svh - 132px))}
+  .intro-projects .orbit-card{width:var(--orbit-card-size)}
+  .intro-projects .orbit-wheel{top:calc(50% - var(--orbit-card-size)*.14)}
+}

@@ -48,3 +48,9 @@ No dependencies, tracking scripts, external image services, or mail-service cred
 ## Browser branding update — 27 October 2026
 
 The user approved removing | nyco from the homepage tab title and replacing the favicon with the supplied DCS light/dark artwork. Root and Pages-prefix builds passed. All 18 generated HTML shells include the new title and both icon links. Source and built icon hashes match the supplied originals. Local browser DOM confirmed the title Dela Cruz Studio. and the theme-specific favicon metadata. The build now validates that both icon assets exist. No page layout or contact behavior changed in this revision.
+
+## Opening carousel fit — 27 October 2026
+
+The approved correction raises the fan to balance it beside the centered left copy, limits desktop card size against viewport height, and caps the scene height. At 1910×1075 the left copy top remained 291.52px before and after, while the corrected fan was fully visible at sampled bounds 195.74–862.03px. At 1419×719 all four cursor-corner samples fit vertically within 32.12–663.39px. At 1419×600 a bottom-corner tilt fit within 58.74–563.58px and ArrowRight retained project focus. At 400×821 the native mobile track remained active and document width stayed 400px. Browser warning/error capture was empty. These are browser measurements, not physical-device results.
+
+Root and Pages-prefix builds and JavaScript syntax checks passed. This revision changes desktop carousel sizing/position and its stylesheet cache key; project assets, copy, mobile layout, and interaction handlers are unchanged.
