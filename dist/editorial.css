@@ -6,6 +6,14 @@
 .site-header{max-width:var(--editorial-max);padding:20px var(--editorial-space);border-bottom:1px solid #43524240;gap:20px}
 .brand img{width:205px}
 .menu-toggle{font-size:.875rem;min-width:74px}
+.menu-toggle .menu-label{display:block;font-size:inherit;line-height:1}
+.menu-toggle .menu-icon{position:relative;display:block;flex:0 0 12px;width:12px;height:10px;background:linear-gradient(currentColor,currentColor) center/100% 1.5px no-repeat}
+.menu-icon::before,.menu-icon::after{content:'';position:absolute;left:0;width:100%;height:1.5px;background:currentColor}
+.menu-icon::before{top:0}
+.menu-icon::after{bottom:0}
+.menu-toggle[aria-expanded="true"] .menu-icon{background:none}
+.menu-toggle[aria-expanded="true"] .menu-icon::before{top:50%;transform:translateY(-50%) rotate(45deg)}
+.menu-toggle[aria-expanded="true"] .menu-icon::after{top:50%;bottom:auto;transform:translateY(-50%) rotate(-45deg)}
 #main-nav{font-size:.875rem;top:calc(100% - 1px);left:var(--editorial-space);right:var(--editorial-space);max-height:calc(100svh - 120px);overflow:auto}
 #main-nav a{gap:7px;min-width:44px}
 #main-nav .nav-contact{border:0;border-radius:0;padding-inline:0;margin-left:0;position:relative}
@@ -90,7 +98,7 @@
 .home-contact .home-inquiry{margin:28px 0 0;border-color:var(--ground);color:var(--ground);max-width:100%;text-decoration:none;text-align:center}
 .home-contact .home-inquiry:is(:hover,:focus-visible){background:var(--ground);color:var(--ink)}
 .home-contact :is(a,button):focus-visible{outline-color:var(--ground)}
-.site-footer{max-width:var(--editorial-max);padding:18px var(--editorial-space);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:.6875rem}
+.site-footer{max-width:var(--editorial-max);padding:18px var(--editorial-space);display:flex;flex-direction:column;align-items:flex-start;gap:6px;font-size:.6875rem}
 .footer-links{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
 .footer-links a{display:inline-flex;align-items:center;min-height:44px;min-width:44px}
 .footer-links a:hover{text-decoration:underline;text-underline-offset:5px}
