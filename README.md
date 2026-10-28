@@ -32,6 +32,7 @@ Open [localhost:43821](http://127.0.0.1:43821/).
 | [dist/projects.json](dist/projects.json) | Project names, locations, dates, descriptions, and image paths. |
 | [dist/app.js](dist/app.js) | Page content, rendering, navigation, and inquiry behavior. |
 | [dist/style.css](dist/style.css) and [dist/editorial.css](dist/editorial.css) | Shared styles, typography, and page layouts. |
+| [dist/mobile.css](dist/mobile.css) | Phone layouts below 800px, including the opening composition and About portrait. |
 | [dist/effects.js](dist/effects.js) and [dist/effects.css](dist/effects.css) | Carousels, service tabs, and supporting motion. |
 | [dist/assets/](dist/assets/) | Original imagery, responsive images, logos, and fonts. |
 | [dist/index.html](dist/index.html) | Shared page shell and metadata. |

@@ -1,5 +1,15 @@
 # Approved portfolio update verification
 
+## Reviewed phone layout — 28 October 2026
+
+The user reviewed the isolated phone preview and authorized publication. Below 800px, the opening places name/location and headline above the existing six-project fan, with the site-planning description below. The first scroll beyond 8px permanently dismisses the fan for that page visit and collapses its space. Returning to the top keeps it dismissed; reloading restores the opening. The compact mobile header uses a solid ground surface. About places the professional introduction beside a larger portrait flush to the right edge, followed by full-width biography paragraphs. Service rows open one at a time, with horizontally scrollable image examples. Drawn arrows avoid iOS emoji presentation.
+
+Browser evidence uses live iframe viewports because the browser's viewport override produced zoom/compositor inconsistencies. At 393×852 the opening description ends around 741px and the document has no horizontal overflow. The final About portrait spans approximately x233–393, y150–416; the heading begins near y153 and the first biography paragraph near y420. No side gutter or extra portrait/body gap remains. The final portrait refinement preserves the measured introduction text width.
+
+Checks at 320, 393, 430 and 768px found no page overflow before the final narrow portrait-spacing adjustment. Contact, case study and software routes fit the 393px frame, and form inputs remain 16px. Service open/close and Images/Description tabs worked. Dismissal was tested through scrolling and Back to Top: at scrollY0 the fan remained display:none and the introduction moved to 100px below the top. Reload restored the fan. Before the final mobile-only portrait adjustment, preview and baseline 1170px hero-copy/fan rectangles, About text widths and header heights matched exactly. Desktop styles remain unchanged.
+
+Root and Pages-prefix builds, all 17-page static route/content/asset/fallback checks, and JavaScript syntax are checked again before publication. These are responsive browser checks, not physical iPhone 14 Pro verification. No inquiry was sent or email draft opened. Deployment/live-asset evidence is recorded separately in the chat's publication receipt.
+
 The user reviewed the isolated preview and authorized GitHub publication on 27 October 2026. The following checks describe the approved source; deployment and live-site results are recorded in the publication receipt saved with the chat outputs.
 
 ## Current publication checks

@@ -40,6 +40,7 @@
   let scrollFrame = 0;
   let statementWords = [];
   let projectCursor;
+  let mobileOpeningDismissed = false;
 
   function picture(p, className = '') {
     return `<img class="${className}" src="${assetURL(`project-${p.id}-680.jpg`)}" srcset="${assetURL(`project-${p.id}-680.jpg`)} 680w, ${assetURL(`project-${p.id}-1280.jpg`)} 1280w" sizes="(max-width: 799px) 82vw, 500px" width="680" height="486" alt="${escape(title(p))} design visualization" loading="lazy" decoding="async">`;
@@ -51,7 +52,7 @@
 
   function runWheel(time) {
     wheelFrame = 0;
-    if (!wheelVisible || reduced || mobilePreference.matches || document.hidden) return;
+    if (!wheelVisible || reduced || document.hidden || orbit?.inert) return;
     const delta = previousTime ? Math.min(time - previousTime, 50) : 0;
     previousTime = time;
     const focused = wheel.contains(document.activeElement);
@@ -64,17 +65,13 @@
   }
 
   function startWheel() {
-    if (!wheelFrame && wheelVisible && !reduced && !mobilePreference.matches) {
+    if (!wheelFrame && wheelVisible && !reduced) {
       previousTime = 0;
       wheelFrame = requestAnimationFrame(runWheel);
     }
   }
 
   function rotate(direction) {
-    if (mobilePreference.matches) {
-      mobileTrack.scrollBy({left:direction * mobileTrack.clientWidth * .86,behavior:reduced?'instant':'smooth'});
-      return;
-    }
     targetAngle += direction * -28;
     idleUntil = performance.now() + 4500;
     if (reduced) { angle = targetAngle; paintWheel(); }
@@ -102,7 +99,7 @@
       startWheel();
     }, {passive:true});
 
-    scene.addEventListener('pointerenter',()=>{wheelHovering=true;});
+    scene.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch')wheelHovering=true;});
     scene.addEventListener('pointerleave',()=>{wheelHovering=false;});
     scene.addEventListener('keydown',event=>{
       if(!['ArrowLeft','ArrowRight'].includes(event.key))return;
@@ -111,6 +108,7 @@
     });
     scene.addEventListener('pointerdown',event=>{
       if (event.button!==0) return;
+      wheelHovering=false;
       dragging=true; dragged=false; dragX=event.clientX; dragAngle=angle;
     });
     scene.addEventListener('pointermove',event=>{
@@ -161,7 +159,7 @@
     content.className='about-content';
     content.append(heading,biography);
     const portraitImage=portrait.querySelector('img');
-    if(portraitImage)portraitImage.sizes='(max-width: 642px) 28vw, (max-width: 799px) 180px, (max-width: 1199px) 32vw, (max-width: 1421px) 38vw, 540px';
+    if(portraitImage)portraitImage.sizes='(max-width: 359px) 120px, (max-width: 799px) 160px, (max-width: 1199px) 32vw, (max-width: 1421px) 38vw, 540px';
     about.replaceChildren(content,portrait);
     about.classList.add('combined-about');
     intro.classList.add('intro-with-orbit');
@@ -170,6 +168,10 @@
   function setupServices(projects) {
     const projectIds=[11,8,4,1];
     document.querySelectorAll('.service-row').forEach((row,index)=>{
+      row.addEventListener('toggle',()=>{
+        if(!row.open||!mobilePreference.matches)return;
+        document.querySelectorAll('.service-row[open]').forEach(other=>{if(other!==row)other.open=false;});
+      });
       const original=row.querySelector('.service-content');
       const description=original.querySelector('p').textContent;
       const p=projects.find(p=>p.id===projectIds[index]);
@@ -370,6 +372,14 @@
 
   function updateStatement(){
     scrollFrame=0;
+    if(orbit){
+      if(mobilePreference.matches&&window.scrollY>8)mobileOpeningDismissed=true;
+      const hidden=mobilePreference.matches&&mobileOpeningDismissed;
+      document.body.classList.toggle('mobile-intro-dismissed',hidden);
+      orbit.style.setProperty('--mobile-orbit-opacity',hidden?'0':'1');
+      orbit.inert=hidden;
+      if(!orbit.inert)startWheel();
+    }
     const statement=document.querySelector('.about-lead');
     if(!statement)return;
     const rect=statement.getBoundingClientRect();
