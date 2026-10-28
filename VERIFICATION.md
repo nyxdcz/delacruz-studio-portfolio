@@ -64,3 +64,12 @@ The build now renders actual content into every route's HTML using the existing 
 Reviewed browser evidence: six fan links and arrow-key rotation; native service open/close and tab selection; Back to Top at scrollY0; no console warnings/errors in the final capture; a revealed header ground surface and clearance; zero measured portrait/contact gap. A zero-script fallback fixture exposed all12 native project links. This fixture represents the no-script markup rather than globally disabling the browser's JavaScript engine.
 
 At358×757, DOM/keyboard checks confirmed no horizontal overflow, a roughly220px About text column, about895px About height, zero portrait/contact gap and working Menu Enter/Escape behavior. The responsive screenshot compositor returned blank images, so a visual phone or physical-device pass is not claimed. No form was sent or email app launched. Existing full audit limitations and intentional Hallmark style conflicts remain.
+
+
+## Reviewed refinements and enhanced motion — 28 October 2026
+
+The user reviewed the local preview and approved publication. Discuss a Project is visible on first entry, service Description panels fit their text, Services opens without a redundant label, and the compact Wrap feature explains documented coastal planting decisions. Letter rolls, project cursor, hover/focus image zooms, entry reveals and About word coloring are restored with refined timing. Original portfolio facts, assets, destinations, draft-form behavior and static content delivery remain.
+
+Both root and Pages-prefix builds and all 17-page destination/asset/content/fallback checks passed in the reviewed preview. JavaScript syntax passed. Desktop browser checks confirmed 15 rolling controls, 15 About words, 12 reveal targets, accessible link names, keyboard focus, immediate reveal on focus, 1.025 photo zoom, custom cursor opacity/positioning, retained carousel dragging, intermediate About color states and no captured console errors. The four-refinement preview measured zero horizontal overflow at desktop and actual398×808 phone width; its landscape Description stage matched its text panel at about147px.
+
+Reduced-motion CSS/script safeguards were reviewed; no OS preference change or physical-device run is claimed. No inquiry was sent. The restored effects are an explicit user preference and are not a declaration that the strict Hallmark rules all pass.

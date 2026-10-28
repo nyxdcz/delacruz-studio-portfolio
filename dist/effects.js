@@ -37,6 +37,9 @@
   let toolsHovering = false;
   let toolsFocused = false;
   let toolsLastTime = 0;
+  let scrollFrame = 0;
+  let statementWords = [];
+  let projectCursor;
 
   function picture(p, className = '') {
     return `<img class="${className}" src="${assetURL(`project-${p.id}-680.jpg`)}" srcset="${assetURL(`project-${p.id}-680.jpg`)} 680w, ${assetURL(`project-${p.id}-1280.jpg`)} 1280w" sizes="(max-width: 799px) 82vw, 500px" width="680" height="486" alt="${escape(title(p))} design visualization" loading="lazy" decoding="async">`;
@@ -285,13 +288,96 @@
   }
 
   function setupFocus(projects){
-    const p=projects.find(p=>p.id===8)||projects[0];
+    const p=projects.find(p=>p.id===8);
     if(!p)return;
     const section=document.createElement('section');
     section.className='focus-study editorial-shell';
-    section.innerHTML=`<div class="editorial-heading"><div><p class="eyebrow">Design in focus</p><h2>A closer look.</h2></div><span class="section-index">[${String(p.id).padStart(3,'0')}]</span></div><div class="focus-scroll"><div class="focus-sticky"><a class="focus-image" href="${projectURL(p.id)}" aria-label="View ${escape(title(p))}">${picture(p)}<span class="focus-caption"><span>${escape(title(p))}</span><span>Explore this project <span class="action-arrow" aria-hidden="true">↗</span></span></span></a></div></div>`;
+    section.innerHTML=`<div class="editorial-heading"><h2>Planting for a coastal site.</h2><span class="section-index">[${String(p.id).padStart(3,'0')}]</span></div><div class="focus-scroll"><div class="focus-sticky"><div class="focus-project"><a class="focus-image" href="${projectURL(p.id)}" aria-label="View ${escape(title(p))}">${picture(p)}<span class="focus-caption"><span>${escape(title(p))}</span><span>Explore this project <span class="action-arrow" aria-hidden="true">↗</span></span></span></a><p class="focus-detail">For this beachfront property in San Vicente, the planting strategy pairs salt-tolerant shoreline groundcovers with layered planting around the house and casitas. Deep-rooted shrubs, groundcovers, and canopy trees address the driveway slopes.</p></div></div></div>`;
     document.querySelector('.home-about').before(section);
   }
+
+  function setupRollingText(){
+    document.querySelectorAll('#main-nav a,.home-intro-actions a,.editorial-text-link,.outline-index-link,.all-projects>summary').forEach(link=>{
+      if(link.querySelector('.roll-window'))return;
+      if(!link.hasAttribute('aria-label'))link.setAttribute('aria-label',link.textContent.trim());
+      [...link.childNodes].filter(node=>node.nodeType===Node.TEXT_NODE&&node.textContent.trim()).forEach(node=>{
+        const wrapper=document.createElement('span');
+        wrapper.className='roll-window';
+        wrapper.setAttribute('aria-hidden','true');
+        const letters=[...node.textContent.trim()].map((letter,index)=>`<span style="--letter:${Math.min(index,16)}">${letter===' '?'&nbsp;':escape(letter)}</span>`).join('');
+        wrapper.innerHTML=`<span class="roll-line">${letters}</span><span class="roll-line roll-copy">${letters}</span>`;
+        node.replaceWith(wrapper);
+      });
+    });
+  }
+
+  function setupReveals(){
+    if(!('IntersectionObserver' in window))return;
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target);}
+      });
+    },{threshold:.08,rootMargin:'0px 0px -16px 0px'});
+    document.querySelectorAll('.home-work .editorial-heading h2,.editorial-project,.service-row,.home-about h2,.home-contact h2,.focus-study .editorial-heading h2').forEach((element,index)=>{
+      element.classList.add('motion-reveal');
+      element.style.setProperty('--reveal-delay',`${element.classList.contains('editorial-project')?index%2*55:0}ms`);
+      if(reduced)element.classList.add('is-visible');
+      else observer.observe(element);
+      element.addEventListener('focusin',()=>element.classList.add('is-visible'));
+    });
+  }
+
+  function setupStatement(){
+    const statement=document.querySelector('.about-lead');
+    if(!statement)return;
+    const text=statement.textContent;
+    statement.innerHTML=`<span class="statement-accessible">${escape(text)}</span>`+text.split(/\s+/).map(word=>`<span class="statement-word" aria-hidden="true">${escape(word)}</span>`).join(' ');
+    statementWords=[...statement.querySelectorAll('.statement-word')];
+  }
+
+  function setupCursor(){
+    const cursor=document.createElement('div');
+    cursor.className='project-cursor';
+    cursor.textContent='[ View project ]';
+    cursor.setAttribute('aria-hidden','true');
+    document.body.append(cursor);
+    let frame=0,active=false,x=0,y=0,targetX=0,targetY=0;
+    const paint=()=>{
+      frame=0;
+      if(!active||reduced||!finePointer.matches||document.hidden)return;
+      x+=(targetX-x)*.24;
+      y+=(targetY-y)*.24;
+      cursor.style.setProperty('--cursor-x',`${x}px`);
+      cursor.style.setProperty('--cursor-y',`${y}px`);
+      if(Math.abs(targetX-x)+Math.abs(targetY-y)>.2)frame=requestAnimationFrame(paint);
+    };
+    const hide=()=>{active=false;cursor.classList.remove('is-visible');cancelAnimationFrame(frame);frame=0;};
+    projectCursor={hide};
+    document.addEventListener('pointermove',event=>{
+      if(event.pointerType==='touch'||!finePointer.matches||reduced||!event.target.closest('.editorial-project-photo,.orbit-card,.focus-image,.service-motion-example')){hide();return;}
+      targetX=Math.max(cursor.offsetWidth/2+8,Math.min(innerWidth-cursor.offsetWidth/2-8,event.clientX));
+      targetY=Math.max(cursor.offsetHeight*1.5+8,event.clientY);
+      if(!active){x=targetX;y=targetY;}
+      active=true;
+      cursor.classList.add('is-visible');
+      if(!frame)paint();
+    },{passive:true});
+    document.addEventListener('pointerleave',hide);
+    window.addEventListener('scroll',hide,{passive:true});
+    window.addEventListener('blur',hide);
+    document.addEventListener('visibilitychange',()=>{if(document.hidden)hide();});
+  }
+
+  function updateStatement(){
+    scrollFrame=0;
+    const statement=document.querySelector('.about-lead');
+    if(!statement)return;
+    const rect=statement.getBoundingClientRect();
+    const progress=Math.max(0,Math.min(1,(innerHeight*.88-rect.top)/(innerHeight*.36+rect.height*.3)));
+    statementWords.forEach((word,index)=>word.classList.toggle('is-read',reduced||index/statementWords.length<progress));
+  }
+
+  function scheduleStatement(){if(!scrollFrame)scrollFrame=requestAnimationFrame(updateStatement);}
 
   function updateMotion(){
     reduced=reducedPreference.matches;
@@ -303,6 +389,11 @@
     cancelAnimationFrame(wheelFrame);wheelFrame=0;
     if(!reduced)startWheel();
     refreshToolsMotion();
+    if(reduced){
+      document.querySelectorAll('.motion-reveal').forEach(element=>element.classList.add('is-visible'));
+    }
+    if(reduced||!finePointer.matches||mobilePreference.matches)projectCursor?.hide();
+    updateStatement();
   }
 
   async function initialize(){
@@ -317,8 +408,14 @@
       setupToolsAndStory();
       setupServices(projects);
       setupFocus(projects);
+      setupRollingText();
+      setupStatement();
+      setupReveals();
+      setupCursor();
       document.body.classList.add('motion-ready');
       updateMotion();
+      window.addEventListener('scroll',scheduleStatement,{passive:true});
+      window.addEventListener('resize',scheduleStatement,{passive:true});
       window.addEventListener('resize',()=>toolsRows.forEach(paintToolsRow),{passive:true});
       reducedPreference.addEventListener('change',updateMotion);
       mobilePreference.addEventListener('change',updateMotion);
