@@ -156,7 +156,7 @@
 .story-copy p+p{margin-top:22px}
 .story-copy .story-motto{text-align:center;font-weight:500;letter-spacing:.075em;margin-top:28px;color:var(--ink)}
 .service-row>summary,.all-project-index a{position:relative;isolation:isolate}
-.service-row>summary::before,.all-project-index a::before{content:'';position:absolute;inset:0;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.22,1,.36,1);z-index:0}
+.service-row>summary::before,.all-project-index a::before{content:'';position:absolute;inset:0;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform var(--motion-hover) var(--motion-ease);z-index:0}
 .service-row>summary>*,.all-project-index a>*{position:relative;z-index:1}
 .service-row>summary:is(:hover,:focus-visible)::before,.all-project-index a:is(:hover,:focus-visible)::before{transform:scaleX(1)}
 .service-row>summary:is(:hover,:focus-visible) :is(h3,.service-index,.service-focus,.service-toggle){color:var(--ground)}
@@ -223,7 +223,7 @@
 .focus-scroll{height:auto;min-height:0;max-height:none;padding-bottom:48px}
 .focus-sticky{position:static;height:auto;padding-top:16px}
 .focus-image{max-width:1100px;margin-inline:auto;transform:none;will-change:auto}
-.editorial-project-photo img,.tool-logo,.tool-logo-label{transition:opacity .2s ease}
+.editorial-project-photo img,.tool-logo,.tool-logo-label{transition:opacity var(--motion-ui) var(--motion-ease)}
 .editorial-project:is(:hover,:focus-visible) .editorial-project-photo img{transform:none}
 .tool-logo-link:is(:hover,:focus-visible) .tool-logo{transform:none}
 .tool-logo-label{transform:none}
@@ -239,17 +239,17 @@
 /* Motion restored by request; the project fan remains the main visual interaction. */
 .roll-window{display:inline-grid;overflow:hidden;line-height:1.4;vertical-align:bottom;font:inherit}
 .roll-line{grid-area:1/1;white-space:nowrap;display:flex}
-.roll-line>span{display:inline-block;transition:transform .32s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--letter)*6ms)}
+.roll-line>span{display:inline-block;transition:transform var(--motion-hover) var(--motion-ease);transition-delay:calc(var(--letter)*4ms)}
 .roll-copy>span{transform:translateY(112%)}
 :is(a,button,summary):is(:hover,:focus-visible)>.roll-window .roll-line:not(.roll-copy)>span{transform:translateY(-112%)}
 :is(a,button,summary):is(:hover,:focus-visible)>.roll-window .roll-copy>span{transform:translateY(0)}
 .button .roll-window,.button .roll-window span{font-size:inherit}
 .project-cursor{position:fixed;left:0;top:0;z-index:100;pointer-events:none;background:var(--ground);color:var(--ink);padding:8px 12px;border:1px solid var(--ink);white-space:nowrap;opacity:0;transform:translate3d(calc(var(--cursor-x,0px) - 50%),calc(var(--cursor-y,0px) - 150%),0);transition:opacity .12s ease}
 .project-cursor.is-visible{opacity:1}
-.editorial-project-photo img{transition:transform .55s cubic-bezier(.22,1,.36,1)}
+.editorial-project-photo img{transition:transform var(--motion-image) var(--motion-ease)}
 .editorial-project:is(:hover,:focus-visible) .editorial-project-photo img{transform:scale(1.025)}
 .focus-image{overflow:hidden}
-.focus-image>img{transition:transform .55s cubic-bezier(.22,1,.36,1);transform-origin:center}
+.focus-image>img{transition:transform var(--motion-image) var(--motion-ease);transform-origin:center}
 .focus-image:is(:hover,:focus-visible)>img{transform:scale(1.018)}
 .focus-caption{position:relative;background:var(--ground)}
 .motion-ready .motion-reveal{transition:opacity .5s ease,transform .5s cubic-bezier(.22,1,.36,1);transition-delay:var(--reveal-delay,0ms)}

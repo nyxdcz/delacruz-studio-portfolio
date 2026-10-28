@@ -67,9 +67,11 @@
     previousTime = time;
     const focused = wheel.contains(document.activeElement);
     if (!dragging && !focused && !wheelHovering && time > idleUntil) targetAngle -= delta * .006;
-    if (!dragging) angle += (targetAngle - angle) * .1;
-    tiltX += (targetTiltX - tiltX) * .12;
-    tiltY += (targetTiltY - tiltY) * .12;
+    const rotationBlend = 1 - Math.exp(-delta / 150);
+    const tiltBlend = 1 - Math.exp(-delta / 125);
+    if (!dragging) angle += (targetAngle - angle) * rotationBlend;
+    tiltX += (targetTiltX - tiltX) * tiltBlend;
+    tiltY += (targetTiltY - tiltY) * tiltBlend;
     paintWheel();
     wheelFrame = requestAnimationFrame(runWheel);
   }
@@ -108,6 +110,10 @@
       targetTiltY = x * 14;
       startWheel();
     }, {passive:true});
+
+    const restTilt = () => { targetTiltX = targetTiltY = 0; startWheel(); };
+    document.addEventListener('pointerleave', restTilt);
+    window.addEventListener('blur', restTilt);
 
     scene.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch')wheelHovering=true;});
     scene.addEventListener('pointerleave',()=>{wheelHovering=false;});
