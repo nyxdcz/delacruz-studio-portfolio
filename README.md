@@ -1,68 +1,74 @@
-# Dela Cruz Studio portfolio
+# Dela Cruz Studio
 
-Independent HTML, CSS, and JavaScript recreation of Nyco's existing Framer portfolio. The site includes the home page, biography, software page, project index, all 12 case studies, contact page, and a missing-page view.
+Architectural and landscape design, site planning, and 3D visualization by Nyco, based in Palawan, Philippines.
 
-The original portrait, logo, project images, and tool graphics are included locally. The approved typography uses locally bundled Inter Display for headings and body copy, and Martian Mono for navigation, labels, and indices. Their SIL Open Font Licenses are included in `licenses/` and copied into the built site. The website does not load the Framer runtime or depend on Framer hosting. Social profiles remain external links.
+**[View the live portfolio](https://nyxdcz.github.io/delacruz-studio-portfolio/)** · [Projects](https://nyxdcz.github.io/delacruz-studio-portfolio/projects/) · [Project inquiry](https://nyxdcz.github.io/delacruz-studio-portfolio/contact/)
 
-## Preview locally
+[![Wrap Technologies Inc. landscape visualization in San Vicente, Palawan](dist/assets/project-8-1280.jpg)](https://nyxdcz.github.io/delacruz-studio-portfolio/projects/8/)
 
-From this folder:
+Featured work: **Wrap Technologies Inc.**, San Vicente, Palawan.
+
+## About the project
+
+An independent static portfolio built with HTML, CSS, and JavaScript. It includes 12 project case studies, an interactive project fan, service descriptions, a software overview, and a project inquiry page.
+
+Project images, branding, and fonts are bundled locally. The site runs independently of Framer and publishes through GitHub Pages. Core page content is included in the generated HTML; JavaScript adds the interactive effects.
+
+## Run locally
+
+Requires Node.js and Python 3. No package installation is needed.
 
 ```sh
 npm run build
 npm run dev
 ```
 
-Open http://127.0.0.1:43821. No package installation is required; the build needs Node.js and the preview uses Python 3.
+Open [localhost:43821](http://127.0.0.1:43821/).
 
-## Edit the site
+## Edit the portfolio
 
-- `dist/app.js`: page content, navigation, contact behavior, and rendering.
-- `dist/style.css`: base styles, project and contact layouts, and focus styles.
-- `dist/editorial.css`: approved editorial homepage, shared navigation/footer, numbered gallery, and expandable services.
-- `dist/effects.js` and `dist/effects.css`: project carousel, two-row tools carousel, service tabs, compact project feature, and motion/accessibility handling.
-- `dist/projects.json`: all 12 project titles, locations, dates, types, and descriptions.
-- `dist/assets/`: locally bundled images and fonts.
-- `dist/index.html`: shared page shell and metadata.
-- `build.mjs` and `render-static.mjs`: generate content-filled pages for every route using the shared page render functions. Rebuild after editing content, rendering, metadata or project data.
-- `verify-static.mjs`: checks built content, local destinations, assets, gallery completeness and the no-script inquiry fallback; GitHub Pages runs it before deployment.
-- `tools/prepare-images.py`: macOS helper to regenerate 680px and 1280px gallery images from the original project files. These derivatives are committed, so CI does not need this helper.
+| File | Purpose |
+| --- | --- |
+| [dist/projects.json](dist/projects.json) | Project names, locations, dates, descriptions, and image paths. |
+| [dist/app.js](dist/app.js) | Page content, rendering, navigation, and inquiry behavior. |
+| [dist/style.css](dist/style.css) and [dist/editorial.css](dist/editorial.css) | Shared styles, typography, and page layouts. |
+| [dist/effects.js](dist/effects.js) and [dist/effects.css](dist/effects.css) | Carousels, service tabs, and supporting motion. |
+| [dist/assets/](dist/assets/) | Original imagery, responsive images, logos, and fonts. |
+| [dist/index.html](dist/index.html) | Shared page shell and metadata. |
+| [build.mjs](build.mjs) and [render-static.mjs](render-static.mjs) | Generate content-filled pages for every route. |
 
-## Host independently
+Rebuild after editing page content, metadata, rendering, or project data. The generated route HTML uses the shared render functions in `dist/app.js`.
 
-Upload the contents of `dist/` to any static web host that supports directory index files and a custom `404.html`. Each project has its own generated `projects/<id>/index.html`, so direct links work without special client-side routing rules.
+The optional [image helper](tools/prepare-images.py) regenerates responsive JPEGs on macOS. The generated images are already included, so deployment does not require this helper.
 
-This project also contains its Sites hosting configuration in `.openai/hosting.json`. The exact site identity is retained there for future updates. The hosted review starts private to the owner.
+## Verify and deploy
 
-## GitHub Pages
+Check a local build:
 
-The GitHub repository is `nyxdcz/delacruz-studio-portfolio`. Its Pages address is https://nyxdcz.github.io/delacruz-studio-portfolio/ once the first deployment succeeds. The GitHub Pages website is public.
+```sh
+npm run build
+node verify-static.mjs
+```
 
-The workflow in `.github/workflows/pages.yml` builds and deploys changes pushed to `main`. In the repository's Settings > Pages, the publishing source should be **GitHub Actions**.
+The verifier checks generated content, local links, assets, gallery completeness, and the inquiry fallback across 17 pages.
 
-The build reads the Pages base path and generates `_site/`. Asset links, project routes, home-section navigation, and direct links work under the repository's URL prefix. The same source still builds for a root domain using `npm run build`.
+Push to `main` to publish through the [GitHub Pages workflow](.github/workflows/pages.yml). The repository's Pages source is **GitHub Actions**. The workflow builds into `_site/`, checks the output, and deploys it under `/delacruz-studio-portfolio/`.
 
-To preview the Pages build locally:
+To prepare the same output manually:
 
 ```sh
 SITE_BASE_PATH=/delacruz-studio-portfolio/ SITE_OUTPUT_DIR=_site node build.mjs
+SITE_BASE_PATH=/delacruz-studio-portfolio/ node verify-static.mjs _site
 ```
 
-Serve `_site/` under a folder named `delacruz-studio-portfolio` to reproduce the deployed URL structure. `_site/` is generated and ignored by Git. `.openai/` is excluded from the GitHub copy because it belongs to the separate Sites host.
+`_site/` is generated and ignored by Git. For a host at a root domain, use `npm run build` and upload the contents of `dist/`; the host should support directory index files and a custom `404.html`.
 
-## Contact behavior
+## Project inquiries
 
-The contact address is `nyxdcz@gmail.com`. It is available through the inquiry page’s Email me button rather than printed on the site. The homepage uses a single project inquiry button that opens that page. The form validates name, email, and message, then opens a draft in the visitor's email application. It does not send or store inquiries itself. Visitors review and send the draft in their mail app. No email service credentials are needed.
+The inquiry form validates the visitor's details and opens an email draft in their mail app. The visitor reviews and sends it there. The website does not send or store inquiries. An Email me link is also available on the inquiry page.
 
-## Reference and scope
+## Design and verification
 
-Content reference: https://delacruzstudio.framer.website/ and the supplied Framer desktop project. The approved update preserves DCS branding and original imagery while adopting the editorial typography, project numbering and interactions discussed using https://titarvl.framer.website/ as a reference. The homepage includes an unclipped project fan beside the introduction, four featured projects, the full 12-project index, expandable services with image/description tabs, a two-row interactive tools carousel before the compact static project feature, and one continuous About description beside an enlarged portrait that meets the right edge and the green contact section. Project index rows share the service hover and keyboard-focus sweep. Buttons use consistent square corners across the homepage, case studies, contact and software pages, with larger action arrows. The Work navigation label has no count. Case studies retain original descriptions and full-resolution images. The user requested removal of the carousel toolbar, Pause icons, Selected views and the About me / My Story labels. Hover/focus pausing, reduced-motion preferences and offscreen/document visibility handling remain. On phones, the project fan becomes a horizontal swipe gallery.
-
-See `VERIFICATION.md` for checks and known verification limits.
-
-The homepage browser tab is titled Dela Cruz Studio. The supplied 64px DCS PNG icons are bundled without alteration: dark artwork is the default for light browser themes, with light artwork selected for a dark browser color scheme.
-
-The approved opening view shows the full-height intro and carousel with one visible Discuss a Project link. Navigation and View Projects reveal after scrolling or keyboard access. The header returns on upward scroll; it is transparent near the top and uses the DCS ground color when revealed over scrolled content. The fan follows pointer orientation around its fixed center, its instruction label is hidden, and Back to Top reaches document position zero. The coastal planting feature has no surrounding dividers, and Open the complete gallery uses the shared outlined plus button.
-
-
-The reviewed refinements keep service Description panels sized to their content, simplify the Services opening, and explain the Wrap project's coastal planting decisions using its existing description. Supporting motion was restored and refined at the user's request: staggered letter links, a smooth project cursor, subtle image zooms, once-only entry reveals and readable About word coloring. Keyboard focus exposes reveal targets immediately; reduced-motion preferences suppress the supporting effects. Core page content is included in the delivered HTML, including all 12 case studies. With scripting off, native project/service disclosures and navigation remain available; inquiry uses the email link rather than an inactive draft form. Run `node verify-static.mjs` after a root build, or `SITE_BASE_PATH=/delacruz-studio-portfolio/ node verify-static.mjs _site` after a Pages build.
+- [Design direction](DESIGN.md): DCS branding, typography, layout decisions, and approved interactions.
+- [Verification record](VERIFICATION.md): build checks, browser observations, and testing limits.
+- [Font licenses](licenses/): bundled Inter Display and Martian Mono license files.
