@@ -51,6 +51,11 @@
     paintWheel();
     updateStatement();
   });
+  document.addEventListener('portfolio:work-start', () => {
+    if (mobilePreference.matches) mobileOpeningDismissed = true;
+    updateStatement();
+    document.querySelector('#work .editorial-heading h2')?.classList.remove('motion-reveal');
+  });
 
   function picture(p, className = '') {
     return `<img class="${className}" src="${assetURL(`project-${p.id}-680.jpg`)}" srcset="${assetURL(`project-${p.id}-680.jpg`)} 680w, ${assetURL(`project-${p.id}-1280.jpg`)} 1280w" sizes="(max-width: 799px) 82vw, 500px" width="680" height="486" alt="${escape(title(p))} design visualization" loading="lazy" decoding="async">`;

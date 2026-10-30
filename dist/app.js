@@ -25,6 +25,21 @@ function resolveSitePaths(root) {
 }
 resolveSitePaths(document);
 
+document.addEventListener('click', event => {
+  const link = event.target.closest('.home-intro-actions .button[href$="#work"]');
+  if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  const work = document.getElementById('work');
+  if (!work) return;
+  event.preventDefault();
+  closeMenu();
+  document.dispatchEvent(new Event('portfolio:work-start'));
+  const destination = window.scrollY + work.getBoundingClientRect().top;
+  if (location.href !== link.href) history.pushState(history.state, '', link.href);
+  work.setAttribute('tabindex', '-1');
+  work.focus({preventScroll:true});
+  window.scrollTo({top:Math.max(0, destination), left:0, behavior:'instant'});
+});
+
 function scrollToSectionHash(hash, behavior = 'instant') {
   if (hash === '#top') window.scrollTo({top:0, left:0, behavior});
   else {
@@ -139,6 +154,11 @@ function setupScrollHeader() {
     openingIntro = path === '/';
     setHidden(openingIntro);
   });
+  document.addEventListener('portfolio:work-start', () => {
+    openingIntro = false;
+    pointerInside = false;
+    setHidden(true);
+  });
   revealZone.addEventListener('pointerenter', () => setHidden(false));
   window.addEventListener('resize', () => {
     previousY = Math.max(0, window.scrollY);
@@ -167,10 +187,19 @@ function projectCards(projects, priority = false) {
   return `<div class="editorial-project-grid">${projects.map((p,index) => `<a class="editorial-project" href="/projects/${p.id}/" aria-label="View ${escapeHTML(p.title)}"><div class="editorial-project-photo">${cardImage(p,priority && index<2)}</div><div class="editorial-project-caption"><p class="project-category"><span class="project-index">${String(p.id).padStart(3,'0')}</span> ${escapeHTML(displayTypes[p.type] || p.type)} · ${escapeHTML(p.year)}</p><h3>${escapeHTML(displayTitles[p.id] || p.title)} <span class="action-arrow" aria-hidden="true">↗</span></h3><p class="project-place">${escapeHTML(p.location.replace(', PHILIPPINES',''))}</p></div></a>`).join('')}</div>`;
 }
 
+function openingSocialLinks() {
+  const profiles = [
+    {name:'LinkedIn',url:'https://www.linkedin.com/in/nyxdcz',icon:'<path d="M20.45 2H3.55C2.69 2 2 2.68 2 3.52v16.96c0 .84.69 1.52 1.55 1.52h16.9c.86 0 1.55-.68 1.55-1.52V3.52c0-.84-.69-1.52-1.55-1.52ZM7.93 18.75H4.98V9.2h2.95v9.55ZM6.45 7.9a1.71 1.71 0 1 1 0-3.42 1.71 1.71 0 0 1 0 3.42Zm12.3 10.85H15.8V14.1c0-1.11-.02-2.54-1.55-2.54-1.55 0-1.79 1.21-1.79 2.46v4.73H9.51V9.2h2.83v1.3h.04a3.1 3.1 0 0 1 2.79-1.53c2.98 0 3.58 1.96 3.58 4.51v5.27Z"/>'},
+    {name:'Instagram',url:'https://www.instagram.com/nycotopia',icon:'<g fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/></g><circle cx="17.5" cy="6.5" r="1.1"/>'},
+    {name:'Facebook',url:'https://www.facebook.com/share/1BU3EpqYKE/',icon:'<path d="M13.4 22v-9.12h3.06l.46-3.56H13.4V7.05c0-1.03.29-1.73 1.76-1.73h1.88V2.14A25.1 25.1 0 0 0 14.3 2c-2.72 0-4.58 1.66-4.58 4.71v2.61H6.65v3.56h3.07V22h3.68Z"/>'}
+  ];
+  return `<div class="hero-social-links" role="group" aria-label="Social profiles">${profiles.map(profile=>`<a class="hero-social-link" href="${profile.url}" aria-label="${profile.name}" title="${profile.name}" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true" focusable="false">${profile.icon}</svg></a>`).join('')}</div>`;
+}
+
 function renderHome(projects) {
   document.body.classList.add('home-page');
   const featured = featuredIds.map(id=>projects.find(p=>p.id===id)).filter(Boolean);
-  main.innerHTML = `<section class="home-intro editorial-shell" id="intro"><div class="home-intro-copy"><p class="eyebrow">Hi, I’m nyco · Palawan, Philippines</p><h1><span>Architectural &amp;</span><span>landscape design.</span><span>Clearly visualized.</span></h1><p class="home-intro-description">From site planning and landscape design to detailed 3D visualization, my work connects spaces with the way people live and use them.</p><div class="home-intro-actions"><a class="editorial-text-link" href="/#contact">Discuss a Project</a><a class="button solid" href="/#work">View Projects <span class="action-arrow" aria-hidden="true">↓</span></a></div></div><figure class="home-portrait"><img src="${new URL('assets/portrait-preview.png',document.baseURI).href}" srcset="assets/portrait-preview.png 392w, assets/portrait.png 904w" sizes="(min-width: 1435px) 330px, (min-width: 957px) 23vw, (min-width: 800px) 220px, 1px" alt="nyco, architectural and landscape designer" width="392" height="650"></figure></section>
+  main.innerHTML = `<section class="home-intro editorial-shell" id="intro"><div class="home-intro-copy"><p class="eyebrow">Hi, I’m Nyco from Palawan, Philippines.</p><h1><span>Architectural &amp;</span><span>landscape design.</span><span>Clearly visualized.</span></h1><p class="home-intro-description">From site planning and landscape design to detailed 3D visualization, my work connects spaces with the way people live and use them.</p><div class="home-intro-actions"><a class="button solid" href="/#work">View Projects <span class="intro-down-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" focusable="false"><path d="M12 3v18m-6-6 6 6 6-6"/></svg></span></a>${openingSocialLinks()}</div></div><figure class="home-portrait"><img src="${new URL('assets/portrait-preview.png',document.baseURI).href}" srcset="assets/portrait-preview.png 392w, assets/portrait.png 904w" sizes="(min-width: 1435px) 330px, (min-width: 957px) 23vw, (min-width: 800px) 220px, 1px" alt="nyco, architectural and landscape designer" width="392" height="650"></figure></section>
   <section class="home-work editorial-shell" id="work"><div class="editorial-heading"><div><p class="eyebrow">Selected Work</p><h2>A few projects<br>I’ve shaped.</h2></div><span class="section-index">[${String(projects.length).padStart(2,'0')}]</span></div>${projectCards(featured,true)}<details class="all-projects"><summary>View all ${projects.length} projects</summary><div class="all-project-index">${projects.map(p=>`<a href="/projects/${p.id}/"><span class="index-number">${String(p.id).padStart(3,'0')}</span><span>${escapeHTML(displayTitles[p.id] || p.title)}</span><span class="index-type">${escapeHTML(displayTypes[p.type] || p.type)}</span><span class="action-arrow" aria-hidden="true">↗</span></a>`).join('')}</div><a class="outline-index-link complete-gallery-link" href="/projects/">Open the complete gallery</a></details></section>
   <section class="home-services editorial-shell" id="services"><div class="editorial-heading"><h2>Services<span class="heading-count">[04]</span></h2><p class="section-aside">Site planning, planting design,<br>and 3D visualization.</p></div><div class="service-rows">${services.map((service,index)=>{const project=projects.find(p=>p.id===service.project);return `<details class="service-row"><summary><span class="service-index">[${String(index+1).padStart(2,'0')}]</span><h3>${service.title}</h3><span class="service-focus">${service.focus}</span><span class="service-toggle" aria-hidden="true"></span></summary><div class="service-content"><div><p>${service.description}</p>${project?`<a class="editorial-text-link" href="/projects/${project.id}/">View ${escapeHTML(displayTitles[project.id] || project.title)} <span class="action-arrow" aria-hidden="true">↗</span></a>`:''}</div>${project?`<a class="service-example" href="/projects/${project.id}/" aria-label="View ${escapeHTML(project.title)}">${cardImage(project)}</a>`:''}</div></details>`;}).join('')}</div><div class="home-tools" id="tools"><p><strong>The tools I reach for:</strong> AutoCAD, SketchUp, Lumion, Enscape, Photoshop, and Canva.</p><a class="editorial-text-link" href="/tool/software/">View my software</a></div></section>
   <section class="home-about editorial-shell" id="about" aria-labelledby="about-heading"><div><p class="eyebrow">The person behind the work</p><h2 id="about-heading">Hi, I’m Nyco.</h2></div><div><p class="about-lead">I’m a freelance Architectural &amp; Landscape Designer and Professional Architectural Visualizer based in Palawan, Philippines.</p><div class="about-story story-copy" id="my-story"><p>I began working in design in 2015 while completing my Bachelor of Science in Architecture at Palawan State University.</p><p>My work covers site and master planning, landscape and architectural design, interiors, and 3D visualization. I develop concepts, presentation drawings, photorealistic renderings, and design documentation.</p><p>I work independently and collaborate with architects, developers, property owners, and design teams, starting with the site, the client’s needs, and the purpose of each space.</p><p class="story-motto">Nurture Concept. Yield Results.</p></div></div></section>

@@ -30,6 +30,11 @@
 .home-intro h1 span{display:block}
 .home-intro-description{max-width:425px;margin-top:22px;font-size:1.0625rem;line-height:1.55;color:var(--muted)}
 .home-intro-actions{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;margin-top:26px}
+.hero-social-links{display:flex;align-items:center;gap:12px}
+.hero-social-link{display:grid;place-items:center;width:44px;height:44px;color:var(--ink);border:1px solid transparent;transition:background-color var(--motion-ui) var(--motion-ease),color var(--motion-ui) var(--motion-ease)}
+.hero-social-link svg{display:block;width:24px;height:24px}
+.hero-social-link:is(:hover,:active){background:var(--ink);color:var(--ground)}
+.hero-social-link:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 .home-intro-actions .button{font-size:.875rem;min-height:46px;padding:12px 22px;gap:20px}
 .editorial-text-link{display:inline-flex;align-items:center;gap:12px;min-height:44px;width:fit-content;border-bottom:1px solid var(--line);font-size:.875rem;line-height:1.4}
 .editorial-text-link:hover{text-decoration:underline;text-underline-offset:5px}
