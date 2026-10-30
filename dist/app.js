@@ -64,11 +64,11 @@ backToTop.addEventListener('click', event => {
   event.preventDefault();
   resetPageOpening(backToTop.href);
 });
-document.querySelector('.brand').addEventListener('click', event => {
+document.querySelectorAll('.brand,.footer-logo').forEach(logo => logo.addEventListener('click', event => {
   if (path !== '/' || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   event.preventDefault();
   resetPageOpening(event.currentTarget.href);
-});
+}));
 window.addEventListener('pageshow', () => {
   if (refreshingPage) resetPageOpening();
 }, {once:true});
@@ -196,6 +196,31 @@ function openingSocialLinks() {
   return `<div class="hero-social-links" role="group" aria-label="Social profiles">${profiles.map(profile=>`<a class="hero-social-link" href="${profile.url}" aria-label="${profile.name}" title="${profile.name}" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true" focusable="false">${profile.icon}</svg></a>`).join('')}</div>`;
 }
 
+function contactContent(standalone = false) {
+  const heading = standalone ? 'h1' : 'h2';
+  return `<div class="studio-contact-layout editorial-shell">
+    <div class="studio-contact-copy">
+      <${heading}>Say hello.</${heading}>
+      <p class="contact-invitation">Tell me about your site, what you’re planning, and the design support you need.</p>
+      <div class="studio-email-bar"><a href="mailto:${email}">${email}</a><button type="button" aria-label="Copy email address">Copy</button></div>
+      <p class="studio-copy-status" role="status"></p>
+      <p class="contact-location">Based in Palawan, Philippines.</p>
+      <div class="studio-contact-links">${openingSocialLinks()}</div>
+    </div>
+    <form class="studio-inquiry" aria-label="Project inquiry">
+      <div class="form-pair">
+        <div class="form-field"><label for="studio-name">Name</label><input id="studio-name" name="name" autocomplete="name" placeholder="Your name" maxlength="160" required></div>
+        <div class="form-field"><label for="studio-email">Email</label><input id="studio-email" name="email" type="email" autocomplete="email" placeholder="Your email address" maxlength="254" required></div>
+      </div>
+      <div class="form-field"><label for="studio-message">What are you planning?</label><textarea id="studio-message" name="message" placeholder="A little about your site and what you have in mind" maxlength="5000" required></textarea></div>
+      <div class="form-field"><label for="studio-location">Project location <span>(optional)</span></label><input id="studio-location" name="location" autocomplete="off" placeholder="City or municipality" maxlength="200"></div>
+      <p class="form-note">This opens a draft in your email app. You can review it before sending.</p>
+      <button class="button solid" type="submit">Open email draft <span class="action-arrow" aria-hidden="true">↗</span></button>
+      <p class="form-status" role="status"></p>
+    </form>
+  </div>`;
+}
+
 function renderHome(projects) {
   document.body.classList.add('home-page');
   const featured = featuredIds.map(id=>projects.find(p=>p.id===id)).filter(Boolean);
@@ -203,7 +228,7 @@ function renderHome(projects) {
   <section class="home-work editorial-shell" id="work"><div class="editorial-heading"><div><p class="eyebrow">Selected Work</p><h2>A few projects<br>I’ve shaped.</h2></div><span class="section-index">[${String(projects.length).padStart(2,'0')}]</span></div>${projectCards(featured,true)}<details class="all-projects"><summary>View all ${projects.length} projects</summary><div class="all-project-index">${projects.map(p=>`<a href="/projects/${p.id}/"><span class="index-number">${String(p.id).padStart(3,'0')}</span><span>${escapeHTML(displayTitles[p.id] || p.title)}</span><span class="index-type">${escapeHTML(displayTypes[p.type] || p.type)}</span><span class="action-arrow" aria-hidden="true">↗</span></a>`).join('')}</div><a class="outline-index-link complete-gallery-link" href="/projects/">Open the complete gallery</a></details></section>
   <section class="home-services editorial-shell" id="services"><div class="editorial-heading"><h2>Services<span class="heading-count">[04]</span></h2><p class="section-aside">Site planning, planting design,<br>and 3D visualization.</p></div><div class="service-rows">${services.map((service,index)=>{const project=projects.find(p=>p.id===service.project);return `<details class="service-row"><summary><span class="service-index">[${String(index+1).padStart(2,'0')}]</span><h3>${service.title}</h3><span class="service-focus">${service.focus}</span><span class="service-toggle" aria-hidden="true"></span></summary><div class="service-content"><div><p>${service.description}</p>${project?`<a class="editorial-text-link" href="/projects/${project.id}/">View ${escapeHTML(displayTitles[project.id] || project.title)} <span class="action-arrow" aria-hidden="true">↗</span></a>`:''}</div>${project?`<a class="service-example" href="/projects/${project.id}/" aria-label="View ${escapeHTML(project.title)}">${cardImage(project)}</a>`:''}</div></details>`;}).join('')}</div><div class="home-tools" id="tools"><p><strong>The tools I reach for:</strong> AutoCAD, SketchUp, Lumion, Enscape, Photoshop, and Canva.</p><a class="editorial-text-link" href="/tool/software/">View my software</a></div></section>
   <section class="home-about editorial-shell" id="about" aria-labelledby="about-heading"><div><p class="eyebrow">The person behind the work</p><h2 id="about-heading">Hi, I’m Nyco.</h2></div><div><p class="about-lead">I’m a freelance Architectural &amp; Landscape Designer and Professional Architectural Visualizer based in Palawan, Philippines.</p><div class="about-story story-copy" id="my-story"><p>I began working in design in 2015 while completing my Bachelor of Science in Architecture at Palawan State University.</p><p>My work covers site and master planning, landscape and architectural design, interiors, and 3D visualization. I develop concepts, presentation drawings, photorealistic renderings, and design documentation.</p><p>I work independently and collaborate with architects, developers, property owners, and design teams, starting with the site, the client’s needs, and the purpose of each space.</p><p class="story-motto">Nurture Concept. Yield Results.</p></div></div></section>
-  <section class="home-contact" id="contact"><div class="editorial-shell"><p class="eyebrow">Let’s talk about your project</p><h2>Have a project<br>in mind?</h2><a class="home-inquiry outline-index-link" href="/contact/">Use the project inquiry form</a></div></section>`;
+  <section class="studio-contact" id="contact">${contactContent()}</section>`;
 }
 
 function renderGallery(projects) {
@@ -220,25 +245,48 @@ function renderProject(projects, id) {
 }
 
 function renderContact() {
-  document.title = 'Contact | Dela Cruz Studio.';
-  main.innerHTML = `<section class="contact-page section-shell"><div><p class="eyebrow">Project inquiry</p><h1>Have a project in mind?</h1><p class="contact-description">Tell me about your site, the type of space, and the design help you need.</p><a class="button contact-email-button" href="mailto:${email}">Email me <span class="action-arrow" aria-hidden="true">↗</span></a></div><form class="contact-form" aria-label="Project inquiry form"><div class="form-field"><label for="name">Name</label><input id="name" name="name" autocomplete="name" placeholder="Your name" required maxlength="160"></div><div class="form-field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" placeholder="Your email address" required maxlength="254"></div><div class="form-field"><label for="message">Message</label><textarea id="message" name="message" placeholder="Tell me about your project" required maxlength="5000"></textarea></div><p class="form-note">This form opens a draft in your email app. Review it and send it from there.</p><div class="form-actions"><button class="button solid" type="submit">Open email draft <span class="action-arrow" aria-hidden="true">↗</span></button></div><p class="form-status" id="form-status" role="status"></p></form></section>`;
-  document.querySelector('form').addEventListener('submit', event => {
+  document.title = 'Say hello | Dela Cruz Studio.';
+  main.innerHTML = `<section class="studio-contact" id="contact">${contactContent(true)}</section>`;
+}
+
+function setupContact() {
+  const contact = document.querySelector('.studio-contact');
+  if (!contact) return;
+  const copyButton = contact.querySelector('.studio-email-bar button');
+  const copyStatus = contact.querySelector('.studio-copy-status');
+  copyButton.addEventListener('click', async () => {
+    copyButton.disabled = true;
+    copyButton.textContent = 'Copying…';
+    try {
+      await navigator.clipboard.writeText(email);
+      copyButton.textContent = 'Copied';
+      copyStatus.textContent = 'Email address copied.';
+    } catch {
+      copyButton.textContent = 'Copy';
+      copyStatus.textContent = 'Copy wasn’t available. Select the email address to copy it manually.';
+    } finally {
+      copyButton.disabled = false;
+    }
+  });
+  contact.querySelector('form').addEventListener('submit', event => {
     event.preventDefault();
     const form = event.currentTarget;
     const fields = new FormData(form);
     const name = fields.get('name').trim();
     const reply = fields.get('email').trim();
     const message = fields.get('message').trim();
+    const projectLocation = fields.get('location').trim();
+    const status = form.querySelector('.form-status');
     if (!name || !reply || !message) {
-      document.querySelector('#form-status').textContent = 'Please enter your name, email address, and a message.';
+      status.textContent = 'Please add your name, email address, and a little about the project.';
       return;
     }
     const subject = encodeURIComponent(`Project inquiry from ${name}`);
-    const body = encodeURIComponent(`${message}\n\nFrom: ${name}\nReply to: ${reply}`);
+    const body = encodeURIComponent(`${message}${projectLocation ? '\n\nProject location: '+projectLocation : ''}\n\nFrom: ${name}\nReply to: ${reply}`);
     const draft = document.createElement('a');
     draft.href = `mailto:${email}?subject=${subject}&body=${body}`;
     draft.click();
-    document.querySelector('#form-status').textContent = 'Your email app should open with a draft. If it doesn’t, use the Email me button. Your message has not been sent by this website.';
+    status.textContent = 'Your email app should open with your draft. This website has not sent your message.';
   });
 }
 
@@ -278,6 +326,7 @@ async function start() {
       else renderProject(projects, Number(path.split('/').pop()));
     } else renderNotFound();
     resolveSitePaths(main);
+    setupContact();
     imageFallbacks();
     if (location.hash) requestAnimationFrame(() => scrollToSectionHash(location.hash));
   } catch (error) {
