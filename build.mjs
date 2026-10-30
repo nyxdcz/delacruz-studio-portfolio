@@ -28,6 +28,7 @@ for (const route of routes) {
 await writeFile(join(output, '404.html'), routeHTML('404'));
 await writeFile(join(output, '.nojekyll'), '');
 await writeFile(join(output, '_headers'), '/assets/*\n  Cache-Control: public, max-age=86400\n/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n');
+await access(join(output, 'apple-touch-icon.png'));
 for (const p of projects) {
   await access(join(output, p.image));
   for (const width of [680,1280]) await access(join(output,'assets',`project-${p.id}-${width}.jpg`));
