@@ -168,7 +168,7 @@ function setupScrollHeader() {
 }
 setupScrollHeader();
 
-const featuredIds = [1, 8, 11, 4];
+const featuredIds = [1, 8, 11, 4, 3, 10];
 const displayTitles = {1:'MSG Farm',8:'Wrap Technologies Inc.',11:'Bañas Residence',4:'Verde Plant-Based Café & Resto'};
 const displayTypes = {'MASTER PLAN':'Master planning','LANDSCAPING':'Landscape design','RESIDENTIAL':'Residential design','INTERIOR':'Interior design','RENOVATION':'Renovation','BRAND IDENTITY':'Brand identity'};
 const services = [
@@ -178,13 +178,14 @@ const services = [
   {title:'3D visualization',focus:'Modeling & rendering',description:'3D modeling and photorealistic renderings to communicate the design before it is built.',project:1}
 ];
 
-function cardImage(project, priority = false) {
-  return `<img src="${new URL(`assets/project-${project.id}-680.jpg`,document.baseURI).href}" srcset="assets/project-${project.id}-680.jpg 680w, assets/project-${project.id}-1280.jpg 1280w" sizes="(min-width: 1440px) 658px, (min-width: 701px) calc((100vw - 124px) / 2), calc(100vw - 44px)" alt="${escapeHTML(project.title)} design visualization" width="680" height="486" ${priority ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
+function cardImage(project, priority = false, gallery = false) {
+  const sizes = gallery ? "(min-width: 1440px) 430px, (min-width: 1100px) calc((100vw - 144px) / 3), (min-width: 800px) calc((100vw - 124px) / 2), calc(100vw - 44px)" : "(min-width: 1440px) 658px, (min-width: 701px) calc((100vw - 124px) / 2), calc(100vw - 44px)";
+  return `<img src="${new URL(`assets/project-${project.id}-680.jpg`,document.baseURI).href}" srcset="assets/project-${project.id}-680.jpg 680w, assets/project-${project.id}-1280.jpg 1280w" sizes="${sizes}" alt="${escapeHTML(project.title)} design visualization" width="680" height="486" ${priority ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
 }
 
 function projectCards(projects, priority = false) {
   if (!projects.length) return '<p class="empty-state">No projects have been added yet. <a href="/contact/">Contact nyco about your project.</a></p>';
-  return `<div class="editorial-project-grid">${projects.map((p,index) => `<a class="editorial-project" href="/projects/${p.id}/" aria-label="View ${escapeHTML(p.title)}"><div class="editorial-project-photo">${cardImage(p,priority && index<2)}</div><div class="editorial-project-caption"><p class="project-category"><span class="project-index">${String(p.id).padStart(3,'0')}</span> ${escapeHTML(displayTypes[p.type] || p.type)} · ${escapeHTML(p.year)}</p><h3>${escapeHTML(displayTitles[p.id] || p.title)} <span class="action-arrow" aria-hidden="true">↗</span></h3><p class="project-place">${escapeHTML(p.location.replace(', PHILIPPINES',''))}</p></div></a>`).join('')}</div>`;
+  return `<div class="editorial-project-grid">${projects.map((p,index) => `<a class="editorial-project" href="/projects/${p.id}/" aria-label="View ${escapeHTML(p.title)}"><div class="editorial-project-photo">${cardImage(p,priority && index<3,true)}</div><div class="editorial-project-caption"><p class="project-category"><span class="project-index">${String(p.id).padStart(3,'0')}</span> ${escapeHTML(displayTypes[p.type] || p.type)} · ${escapeHTML(p.year)}</p><h3>${escapeHTML(displayTitles[p.id] || p.title)} <span class="action-arrow" aria-hidden="true">↗</span></h3><p class="project-place">${escapeHTML(p.location.replace(', PHILIPPINES',''))}</p></div></a>`).join('')}</div>`;
 }
 
 function openingSocialLinks() {

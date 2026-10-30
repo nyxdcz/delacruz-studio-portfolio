@@ -20,7 +20,7 @@ function verifyTouchIcon(html,route){
 for(const route of routes){
   const html=await readFile(join(output,route,'index.html'),'utf8');
   verifyTouchIcon(html,route);
-  assert(html.includes('href="studio.css?v=grain-contact-1"'),`${route}: studio styling missing`);
+  assert(html.includes('href="studio.css?v=continuous-grain-2"'),`${route}: studio styling missing`);
   assert(html.includes('aria-label="Footer pages"')&&html.includes('aria-label="Social profiles"'),`${route}: footer groups missing`);
   const main=html.match(/<main[^>]*>([\s\S]*?)<\/main>/)?.[1];
   assert(main?.includes('<h1'),`${route}: content absent from delivered HTML`);
