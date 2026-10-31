@@ -8,5 +8,5 @@
       <feFuncB type="discrete" tableValues="0 1"/>
     </feComponentTransfer>
   </filter>
-  <rect width="256" height="256" filter="url(#grain)" opacity=".18"/>
+  <rect width="256" height="256" filter="url(#grain)" opacity=".08"/>
 </svg>
