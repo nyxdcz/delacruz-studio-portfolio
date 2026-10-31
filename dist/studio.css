@@ -129,3 +129,5 @@ body,.site-header,.site-header.is-over-content,
  :root{--grain-attachment:scroll}
  #main-nav{background-image:var(--paper-grain);background-size:256px 256px}
 }
+.home-page .site-header:not(.is-over-content){background-color:transparent;background-image:none;pointer-events:none}
+.home-page .site-header:not(.is-over-content) :is(.brand,.menu-toggle,#main-nav a,#main-nav.is-open){pointer-events:auto}

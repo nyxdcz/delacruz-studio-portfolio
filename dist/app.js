@@ -108,7 +108,9 @@ function setupScrollHeader() {
   let openingIntro = path === '/' && previousY <= 2 && (!location.hash || location.hash === '#top');
 
   const setHidden = hidden => {
-    header.classList.toggle('is-over-content', window.scrollY > header.offsetHeight);
+    const intro = path === '/' ? document.getElementById('intro') : null;
+    const overContent = intro ? intro.getBoundingClientRect().bottom <= header.offsetHeight : window.scrollY > header.offsetHeight;
+    header.classList.toggle('is-over-content', overContent);
     header.classList.toggle('is-scroll-hidden', hidden);
     document.body.classList.toggle('is-opening-intro', openingIntro);
     revealZone.hidden = !hidden || openingIntro;
